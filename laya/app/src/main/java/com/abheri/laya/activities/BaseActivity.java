@@ -1,4 +1,4 @@
-package com.MridangaApp.activities;
+package com.abheri.laya.activities;
 
 import android.support.v7.app.AppCompatActivity;
 

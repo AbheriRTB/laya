@@ -5,65 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.getbase.floatingactionbutton.FloatingActionsMenu
-        android:id="@+id/multiple_actions"
-        android:layout_width="wrap_content"
+
+    <SeekBar
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        fab:fab_colorPressed="@android:color/transparent"
-        >
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_a"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_title="A"
-            fab:fab_colorPressed="@android:color/transparent"
-            />
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_b"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_title="B"
-            fab:fab_colorPressed="@android:color/transparent"
-            />
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_c"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_title="B"
-            fab:fab_colorPressed="@android:color/transparent"
-            />
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_d"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_title="B"
-            fab:fab_colorPressed="@android:color/transparent"
-            />
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_e"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_title="B"
-            fab:fab_colorPressed="@android:color/transparent"
-            />
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_f"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_title="B"
-            fab:fab_colorPressed="@android:color/transparent"
-            />
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_g"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_title="B"
-            fab:fab_colorPressed="@android:color/transparent"
-            />
-
-    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+        android:max="10"
+        android:id="@+id/shrutiSeekBar" />
 
 </LinearLayout>

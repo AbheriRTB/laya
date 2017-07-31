@@ -2,26 +2,26 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    tools:context="com.MridangaApp.activities.HomeActivity">
+    tools:context="com.abheri.laya.activities.HomeActivity">
 
-    <com.MridangaApp.views.VerticalSeekBar
+    <com.abheri.laya.views.VerticalSeekBar
         android:id="@+id/sb_mridanga"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
         android:layout_marginLeft="20dp"
+        android:thumb="@android:drawable/ic_notification_overlay" />
 
-        />
 
-    <com.MridangaApp.views.VerticalSeekBar
+    <com.abheri.laya.views.VerticalSeekBar
         android:id="@+id/sb_tamburi"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
         android:layout_marginLeft="20dp"
         android:layout_below="@id/sb_mridanga"
         android:layout_marginTop="10dp"
-        />
+        android:thumb="@android:drawable/ic_notification_overlay" />
 
     <ImageView
         android:id="@+id/iv_ctrl"
@@ -30,17 +30,18 @@
         android:src="@drawable/play_button"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="30dp"
+        android:layout_marginRight="40dp"
         android:layout_marginTop="30dp"/>
+
+
 
     <include
         android:id="@+id/layout_shruthi"
         layout="@layout/layout_shruthi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         />
 
     <include
@@ -48,10 +49,11 @@
         layout="@layout/layout_taala"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@id/layout_shruthi"
-        android:layout_marginRight="10dp"
+        android:layout_above="@id/layout_shruthi"
+        android:layout_toRightOf="@id/sb_tamburi"
+        android:layout_marginLeft="30dp"
         />
+
 
 
 </RelativeLayout>

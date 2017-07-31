@@ -1,4 +1,4 @@
-package com.MridangaApp.activities;
+package com.abheri.laya.activities;
 
 import android.media.MediaPlayer;
 import android.support.v4.content.ContextCompat;
@@ -7,8 +7,8 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 
-import com.MridangaApp.R;
-import com.MridangaApp.views.VerticalSeekBar;
+import com.laya.R;
+import com.abheri.laya.views.VerticalSeekBar;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

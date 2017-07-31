@@ -1,4 +1,4 @@
-package com.MridangaApp;
+package com.abheri.laya;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
