@@ -4,7 +4,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "com.MridangaApp"
+        applicationId "com.abheri.laya"
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
@@ -25,6 +25,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
     compile 'com.getbase:floatingactionbutton:1.10.1'
     compile 'com.jakewharton:butterknife:5.1.1'
     testCompile 'junit:junit:4.12'
