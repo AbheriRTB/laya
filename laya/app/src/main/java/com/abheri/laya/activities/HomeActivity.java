@@ -1,12 +1,13 @@
 package com.abheri.laya.activities;
 
 import android.content.Context;
-import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.View;
@@ -21,14 +22,13 @@ import android.widget.Toast;
 import com.abheri.laya.R;
 import com.abheri.laya.adapters.ListAdapter;
 import com.abheri.laya.models.AudioObject;
+import com.abheri.laya.util.LoopingPlayer;
 
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-
-import static com.abheri.laya.R.raw.f;
 
 /**
  * Created by sahana on 16/7/17.
@@ -67,8 +67,9 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
     @InjectView(R.id.shruthi_gs) TextView shruthiGs;
 
     private ArrayList<AudioObject> items = new ArrayList<AudioObject>(); // items for the list
-    private MediaPlayer mPlayer; // player for mridanga
-    private MediaPlayer mPlayer2; //player for tamburi
+
+    private LoopingPlayer mPlayer;
+    private LoopingPlayer mPlayer2;
     private ListAdapter mCustomListAdapter;
     private int mPositionClicked[] = {0};
     private float mLogMridanga;
@@ -77,8 +78,10 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
     String selectedKaala;
     String selectedTala;
     private String mSelectedBpm;
-    int clipToPlay = 0;
-    String audioFileNameToPlay;
+    int mridangamClipToPlay, tamburiClipToPlay;
+    String mridangamFileNameToPlay, tamburiFileNameToPlay;
+
+    Context self;
 
 
     @Override
@@ -86,6 +89,8 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.inject(this);
+        self = this;
+
         appBarLayout.addOnOffsetChangedListener(this);
         createList(); // Creates the list of all the audios
         mCustomListAdapter = new ListAdapter(this,items,mPositionClicked);
@@ -93,33 +98,44 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         listView.setOnItemClickListener(this);
         kaalaSwitch.setOnCheckedChangeListener(this); // switch checkedchange for kaala
         initialSetUp();
+
     }
 
     private void initialSetUp() {
+        mPlayer = new LoopingPlayer(this);
+        mPlayer2 = new LoopingPlayer(this);
+
         selectedShruthi = this.getResources().getString(R.string.shruthi_c);
         mSelectedBpm = this.getResources().getString(R.string.bpm_70);
-        selectedTala = this.getResources().getString(R.string.Mishrachapu);
+        selectedTala = this.getResources().getString(R.string.Aditala);
         setTextColor(shruthiC,getShrutiTextViews());
         setTextColor(bpm70,getBpmTextViews());
         kaalaSwitch.setChecked(false);
-        setAudioFileName(this);
+        setAudioFileName(self);
         setSeekbarProgress();
     }
 
     private void setInitialVolume() {
-        mPlayer.setVolume(1-mLogMridanga,1-mLogMridanga);
-        mPlayer2.setVolume(1-mLogTamburi,1-mLogTamburi);
+        mPlayer.setVol(1-mLogMridanga);
+        mPlayer2.setVol(1-(float)(mLogTamburi*1.1));
     }
 
     private void createList() {
         //send name of the audio to be displayed, m file, f file
-        items.add(setAudioObject(this.getResources().getString(R.string.Mishrachapu)));
         items.add(setAudioObject(this.getResources().getString(R.string.Aditala)));
+        items.add(setAudioObject(this.getResources().getString(R.string.Mishrachapu)));
         items.add(setAudioObject(this.getResources().getString(R.string.Rupakatala)));
         items.add(setAudioObject(this.getResources().getString(R.string.Khandachapu)));
     }
 
     public void setAudioFileName(Context c){
+
+        tamburiFileNameToPlay = "shruti_" + selectedShruthi.toLowerCase();
+        tamburiClipToPlay = c.getResources().getIdentifier(tamburiFileNameToPlay, "raw", self.getPackageName());
+        //if(tamburiClipToPlay == 0)
+        //    tamburiClipToPlay = c.getResources().getIdentifier("shruti_a", "raw", self.getPackageName());
+
+
 
         if(kaalaSwitch.isChecked()){
             selectedKaala = this.getResources().getString(R.string.kaala_v);
@@ -131,12 +147,15 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         Log.d("HomeActivity","selectedShruthi:: "+selectedShruthi);
         Log.d("HomeActivity","selectedKaala:: "+selectedKaala);
         Log.d("HomeActivity","selectedBPM:: "+mSelectedBpm);
-        audioFileNameToPlay= selectedTala + "_" + selectedShruthi + "_" + selectedKaala + "_" + String.valueOf(mSelectedBpm);
-        audioFileNameToPlay = audioFileNameToPlay.toLowerCase();
-        Log.d("HomeActivity","audioFileNameToPlay:: "+audioFileNameToPlay);
-        clipToPlay = c.getResources().getIdentifier(audioFileNameToPlay, "raw", this.getPackageName());
-        if(clipToPlay == 0)
-            clipToPlay = c.getResources().getIdentifier("audio_1.mp3", "raw", this.getPackageName());
+        mridangamFileNameToPlay = selectedTala + "_" + selectedShruthi + "_" + selectedKaala + "_" + String.valueOf(mSelectedBpm);
+        mridangamFileNameToPlay = mridangamFileNameToPlay.toLowerCase();
+        Log.d("LayaDebug","mridangamFileNameToPlay:: "+ mridangamFileNameToPlay);
+        mridangamClipToPlay = c.getResources().getIdentifier(mridangamFileNameToPlay, "raw", self.getPackageName());
+        //if(mridangamClipToPlay == 0)
+        //    mridangamClipToPlay = c.getResources().getIdentifier("aditala_a_m_70", "raw", self.getPackageName());
+
+        Log.d("layaDebug", tamburiFileNameToPlay.toString() + " " + tamburiClipToPlay);
+        Log.d("layaDebug", mridangamFileNameToPlay.toString() + " " + mridangamClipToPlay);
     }
 
     public AudioObject setAudioObject(String name){
@@ -158,32 +177,35 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
     @OnClick(R.id.btn_play)
     public void playClicked() {
         showPause();
-        pausePlayer1();
-        pausePlayer2();
+        mPlayer.stop();
+        mPlayer2.stop();
 
         setAudioFileName(this);
         //mPlayer = MediaPlayer.create(this, getAudioObjectTobePlayed());
         try {
-            mPlayer = MediaPlayer.create(this, clipToPlay);
-            mPlayer2 = MediaPlayer.create(this, f);
+            mPlayer.play(mridangamClipToPlay);
             setInitialVolume();
-            mPlayer.start();
-            mPlayer.setLooping(true);
-            mPlayer2.start();
-            mPlayer2.setLooping(true);
         }catch (Exception e){
             Log.d("Exception","E:: "+e.toString());
-            Toast.makeText(this,R.string.no_file,Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,R.string.no_tala_file,Toast.LENGTH_SHORT).show();
+        }
+        try {
+            mPlayer2.play(tamburiClipToPlay);
+            setInitialVolume();
+        }catch (Exception e){
+            Log.d("Exception","E:: "+e.toString());
+            Toast.makeText(this,R.string.no_shruti_file,Toast.LENGTH_SHORT).show();
         }
     }
 
     @OnClick(R.id.btn_pause)
     public void pauseClicked() {
         hidePause();
-        pausePlayer1();
-        pausePlayer2();
+        mPlayer.stop();
+        mPlayer2.stop();
     }
 
+    /*
     private void pausePlayer2() {
         if(mPlayer2!=null && mPlayer2.isPlaying()){
             mPlayer2.stop();
@@ -195,6 +217,7 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
             mPlayer.stop();
         }
     }
+    */
 
     public void showPause(){
         btnPause.setVisibility(View.VISIBLE);
@@ -242,7 +265,7 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
                 progress = progress * 5;
                 mLogMridanga=(float)(Math.log(maxVolume-progress)/Math.log(maxVolume));
                 if (mPlayer!=null)
-                    mPlayer.setVolume(1-mLogMridanga, 1-mLogMridanga);
+                    mPlayer.setVol(1-mLogMridanga);
             }
 
             @Override
@@ -261,9 +284,9 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progress = progress / 5;
                 progress = progress * 5;
-                mLogTamburi=(float)(Math.log(maxVolume-progress)/Math.log(maxVolume));
+                mLogTamburi=(float)((Math.log(maxVolume-progress)/Math.log(maxVolume))*1.1);
                 if(mPlayer2!=null)
-                    mPlayer2.setVolume(1-mLogTamburi, 1-mLogTamburi);
+                    mPlayer2.setVol(1-mLogTamburi);
             }
 
             @Override

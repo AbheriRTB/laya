@@ -128,7 +128,7 @@
                 android:paddingTop="@dimen/shruthi_scroll_tb_padding"
                 android:paddingLeft="@dimen/shruthi_scroll_lr_padding"
                 android:paddingRight="@dimen/shruthi_scroll_lr_padding"
-                android:text="B'"
+                android:text="B"
                 android:textColor="@color/transparent_white"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -168,7 +168,7 @@
                 android:paddingTop="@dimen/shruthi_scroll_tb_padding"
                 android:paddingLeft="@dimen/shruthi_scroll_lr_padding"
                 android:paddingRight="@dimen/shruthi_scroll_lr_padding"
-                android:text="E'"
+                android:text="E"
                 android:textColor="@color/transparent_white"
                 android:textSize="20sp"
                 android:textStyle="bold" />
