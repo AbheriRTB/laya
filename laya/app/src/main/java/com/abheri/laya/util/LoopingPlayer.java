@@ -163,6 +163,7 @@ public class LoopingPlayer {
             int mpEnds = 0;
             int mpPlaying = 0;
             int mpNext = 0;
+            Log.d("layaDebug", "curmpMedia Player " + curmp);
             if(curmp == mp[0]) {
                 mpEnds = 0;
                 mpPlaying = 1;
@@ -177,6 +178,10 @@ public class LoopingPlayer {
                 mpEnds = 2;
                 mpPlaying = 0; // corrected, else index out of range
                 mpNext = 1; // corrected, else index out of range
+            }
+            else{
+                //currmp isnt anyone of the mp list. so the mpEnds and mpPlaying = 0
+                Log.d("layaDebug", "ELSE");
             }
 
             // as we have set mp2 mp1's next, so index will be 1

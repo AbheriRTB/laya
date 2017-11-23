@@ -36,35 +36,60 @@ import butterknife.OnClick;
 
 public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetChangedListener, AdapterView.OnItemClickListener, CompoundButton.OnCheckedChangeListener {
 
-    @InjectView(R.id.appbar) AppBarLayout appBarLayout;
-    @InjectView(R.id.header_layout) RelativeLayout headerLayout;
-    @InjectView(R.id.list_view) ListView listView;
-    @InjectView(R.id.btn_play) FloatingActionButton btnPlay;
-    @InjectView(R.id.btn_pause) FloatingActionButton btnPause;
-    @InjectView(R.id.switch_kaala) SwitchCompat kaalaSwitch;
-    @InjectView(R.id.sb_mridanga) SeekBar sbMridanga;
-    @InjectView(R.id.sb_tamburi) SeekBar sbTamburi;
-    @InjectView(R.id.shruthi_scroll) View shruthiScroll;
-    @InjectView(R.id.bpm_70) TextView bpm70;
-    @InjectView(R.id.bpm_80) TextView bpm80;
-    @InjectView(R.id.bpm_90) TextView bpm90;
-    @InjectView(R.id.bpm_100) TextView bpm100;
-    @InjectView(R.id.bpm_110) TextView bpm110;
-    @InjectView(R.id.bpm_120) TextView bpm120;
-    @InjectView(R.id.shruthi_a) TextView shruthiA;
-    @InjectView(R.id.shruthi_as) TextView shruthiAs;
-    @InjectView(R.id.shruthi_b) TextView shruthiB;
-    @InjectView(R.id.shruthi_bs) TextView shruthiBs;
-    @InjectView(R.id.shruthi_c) TextView shruthiC;
-    @InjectView(R.id.shruthi_cs) TextView shruthiCs;
-    @InjectView(R.id.shruthi_d) TextView shruthiD;
-    @InjectView(R.id.shruthi_ds) TextView shruthiDs;
-    @InjectView(R.id.shruthi_e) TextView shruthiE;
-    @InjectView(R.id.shruthi_es) TextView shruthiEs;
-    @InjectView(R.id.shruthi_f) TextView shruthiF;
-    @InjectView(R.id.shruthi_fs) TextView shruthiFs;
-    @InjectView(R.id.shruthi_g) TextView shruthiG;
-    @InjectView(R.id.shruthi_gs) TextView shruthiGs;
+    @InjectView(R.id.appbar)
+    AppBarLayout appBarLayout;
+    @InjectView(R.id.header_layout)
+    RelativeLayout headerLayout;
+    @InjectView(R.id.list_view)
+    ListView listView;
+    @InjectView(R.id.btn_play)
+    FloatingActionButton btnPlay;
+    @InjectView(R.id.btn_pause)
+    FloatingActionButton btnPause;
+    @InjectView(R.id.switch_kaala)
+    SwitchCompat kaalaSwitch;
+    @InjectView(R.id.sb_mridanga)
+    SeekBar sbMridanga;
+    @InjectView(R.id.sb_tamburi)
+    SeekBar sbTamburi;
+    @InjectView(R.id.shruthi_scroll)
+    View shruthiScroll;
+    @InjectView(R.id.bpm_70)
+    TextView bpm70;
+    @InjectView(R.id.bpm_80)
+    TextView bpm80;
+    @InjectView(R.id.bpm_90)
+    TextView bpm90;
+    @InjectView(R.id.bpm_100)
+    TextView bpm100;
+    @InjectView(R.id.bpm_110)
+    TextView bpm110;
+    @InjectView(R.id.bpm_120)
+    TextView bpm120;
+    @InjectView(R.id.shruthi_a)
+    TextView shruthiA;
+    @InjectView(R.id.shruthi_as)
+    TextView shruthiAs;
+    @InjectView(R.id.shruthi_b)
+    TextView shruthiB;
+    @InjectView(R.id.shruthi_c)
+    TextView shruthiC;
+    @InjectView(R.id.shruthi_cs)
+    TextView shruthiCs;
+    @InjectView(R.id.shruthi_d)
+    TextView shruthiD;
+    @InjectView(R.id.shruthi_ds)
+    TextView shruthiDs;
+    @InjectView(R.id.shruthi_e)
+    TextView shruthiE;
+    @InjectView(R.id.shruthi_f)
+    TextView shruthiF;
+    @InjectView(R.id.shruthi_fs)
+    TextView shruthiFs;
+    @InjectView(R.id.shruthi_g)
+    TextView shruthiG;
+    @InjectView(R.id.shruthi_gs)
+    TextView shruthiGs;
 
     private ArrayList<AudioObject> items = new ArrayList<AudioObject>(); // items for the list
 
@@ -80,6 +105,7 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
     private String mSelectedBpm;
     int mridangamClipToPlay, tamburiClipToPlay;
     String mridangamFileNameToPlay, tamburiFileNameToPlay;
+    final int MAX_VOLUME = 100;
 
     Context self;
 
@@ -93,7 +119,7 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
 
         appBarLayout.addOnOffsetChangedListener(this);
         createList(); // Creates the list of all the audios
-        mCustomListAdapter = new ListAdapter(this,items,mPositionClicked);
+        mCustomListAdapter = new ListAdapter(this, items, mPositionClicked);
         listView.setAdapter(mCustomListAdapter);
         listView.setOnItemClickListener(this);
         kaalaSwitch.setOnCheckedChangeListener(this); // switch checkedchange for kaala
@@ -108,16 +134,19 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         selectedShruthi = this.getResources().getString(R.string.shruthi_c);
         mSelectedBpm = this.getResources().getString(R.string.bpm_70);
         selectedTala = this.getResources().getString(R.string.Aditala);
-        setTextColor(shruthiC,getShrutiTextViews());
-        setTextColor(bpm70,getBpmTextViews());
+        setTextColor(shruthiC, getShrutiTextViews());
+        setTextColor(bpm70, getBpmTextViews());
         kaalaSwitch.setChecked(false);
         setAudioFileName(self);
         setSeekbarProgress();
     }
 
     private void setInitialVolume() {
-        mPlayer.setVol(1-mLogMridanga);
-        mPlayer2.setVol(1-(float)(mLogTamburi*1.1));
+        int mProgress = sbMridanga.getProgress();
+        int sProgress = sbTamburi.getProgress();
+
+        mPlayer.setVol((float) mProgress / (float) MAX_VOLUME);
+        mPlayer2.setVol((float) sProgress / (float) MAX_VOLUME);
     }
 
     private void createList() {
@@ -126,9 +155,10 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         items.add(setAudioObject(this.getResources().getString(R.string.Mishrachapu)));
         items.add(setAudioObject(this.getResources().getString(R.string.Rupakatala)));
         items.add(setAudioObject(this.getResources().getString(R.string.Khandachapu)));
+        items.add(setAudioObject(this.getResources().getString(R.string.TishraAdi)));
     }
 
-    public void setAudioFileName(Context c){
+    public void setAudioFileName(Context c) {
 
         tamburiFileNameToPlay = "shruti_" + selectedShruthi.toLowerCase();
         tamburiClipToPlay = c.getResources().getIdentifier(tamburiFileNameToPlay, "raw", self.getPackageName());
@@ -136,20 +166,19 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         //    tamburiClipToPlay = c.getResources().getIdentifier("shruti_a", "raw", self.getPackageName());
 
 
-
-        if(kaalaSwitch.isChecked()){
+        if (kaalaSwitch.isChecked()) {
             selectedKaala = this.getResources().getString(R.string.kaala_v);
-        }else{
+        } else {
             selectedKaala = this.getResources().getString(R.string.kaala_m);
         }
         selectedTala = items.get(mPositionClicked[0]).getAudioName();
-        Log.d("HomeActivity","selectedTala:: "+selectedTala);
-        Log.d("HomeActivity","selectedShruthi:: "+selectedShruthi);
-        Log.d("HomeActivity","selectedKaala:: "+selectedKaala);
-        Log.d("HomeActivity","selectedBPM:: "+mSelectedBpm);
+        Log.d("HomeActivity", "selectedTala:: " + selectedTala);
+        Log.d("HomeActivity", "selectedShruthi:: " + selectedShruthi);
+        Log.d("HomeActivity", "selectedKaala:: " + selectedKaala);
+        Log.d("HomeActivity", "selectedBPM:: " + mSelectedBpm);
         mridangamFileNameToPlay = selectedTala + "_" + selectedShruthi + "_" + selectedKaala + "_" + String.valueOf(mSelectedBpm);
         mridangamFileNameToPlay = mridangamFileNameToPlay.toLowerCase();
-        Log.d("LayaDebug","mridangamFileNameToPlay:: "+ mridangamFileNameToPlay);
+        Log.d("LayaDebug", "mridangamFileNameToPlay:: " + mridangamFileNameToPlay);
         mridangamClipToPlay = c.getResources().getIdentifier(mridangamFileNameToPlay, "raw", self.getPackageName());
         //if(mridangamClipToPlay == 0)
         //    mridangamClipToPlay = c.getResources().getIdentifier("aditala_a_m_70", "raw", self.getPackageName());
@@ -158,7 +187,7 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         Log.d("layaDebug", mridangamFileNameToPlay.toString() + " " + mridangamClipToPlay);
     }
 
-    public AudioObject setAudioObject(String name){
+    public AudioObject setAudioObject(String name) {
         AudioObject audioObject = new AudioObject();
         audioObject.setAudioName(name);
         return audioObject;
@@ -166,10 +195,10 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
 
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-        Log.d("HomeActivity","onOffsetChanged:: "+verticalOffset);
-        if(verticalOffset<-200){
+        Log.d("HomeActivity", "onOffsetChanged:: " + verticalOffset);
+        if (verticalOffset < -200) {
             headerLayout.setVisibility(View.GONE);
-        }else{
+        } else {
             headerLayout.setVisibility(View.VISIBLE);
         }
     }
@@ -185,16 +214,16 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         try {
             mPlayer.play(mridangamClipToPlay);
             setInitialVolume();
-        }catch (Exception e){
-            Log.d("Exception","E:: "+e.toString());
-            Toast.makeText(this,R.string.no_tala_file,Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Log.d("Exception", "E:: " + e.toString());
+            Toast.makeText(this, R.string.no_tala_file, Toast.LENGTH_SHORT).show();
         }
         try {
             mPlayer2.play(tamburiClipToPlay);
             setInitialVolume();
-        }catch (Exception e){
-            Log.d("Exception","E:: "+e.toString());
-            Toast.makeText(this,R.string.no_shruti_file,Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Log.d("Exception", "E:: " + e.toString());
+            Toast.makeText(this, R.string.no_shruti_file, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -219,12 +248,12 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
     }
     */
 
-    public void showPause(){
+    public void showPause() {
         btnPause.setVisibility(View.VISIBLE);
         btnPlay.setVisibility(View.GONE);
     }
 
-    public void hidePause(){
+    public void hidePause() {
         btnPause.setVisibility(View.GONE);
         btnPlay.setVisibility(View.VISIBLE);
     }
@@ -233,39 +262,43 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         mPositionClicked[0] = i;
         mCustomListAdapter.notifyDataSetChanged();
-        playClicked();
+        //playClicked();
+        pauseClicked();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        pauseClicked();
+        //pauseClicked();
     }
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-        playClicked();
+        //playClicked();
+        pauseClicked();
     }
 
     private void setSeekbarProgress() {
         //progress bar config for mridanga and tamburi volume
         sbMridanga.setProgress(100);
-        sbTamburi.setProgress(100);
+        sbTamburi.setProgress(35);
         sbMridanga.incrementProgressBy(5);
         sbTamburi.incrementProgressBy(5);
         sbMridanga.setMax(100);
         sbTamburi.setMax(100);
-        final int maxVolume = 100;
 
-        sbMridanga.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+
+        sbMridanga.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                progress = progress / 5;
+               /* progress = progress / 5;
                 progress = progress * 5;
-                mLogMridanga=(float)(Math.log(maxVolume-progress)/Math.log(maxVolume));
+                mLogMridanga=(float)(Math.log(MAX_VOLUME-progress)/Math.log(MAX_VOLUME));
                 if (mPlayer!=null)
-                    mPlayer.setVol(1-mLogMridanga);
+                    mPlayer.setVol(1-mLogMridanga); */
+                if (mPlayer != null)
+                    mPlayer.setVol((float) progress / (float) MAX_VOLUME);
             }
 
             @Override
@@ -278,15 +311,17 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
 
             }
         });
-        sbTamburi.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+        sbTamburi.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                progress = progress / 5;
+                /*progress = progress / 5;
                 progress = progress * 5;
-                mLogTamburi=(float)((Math.log(maxVolume-progress)/Math.log(maxVolume))*1.1);
+                mLogTamburi=(float)((Math.log(MAX_VOLUME-progress)/Math.log(MAX_VOLUME))*1.1);
                 if(mPlayer2!=null)
-                    mPlayer2.setVol(1-mLogTamburi);
+                    mPlayer2.setVol(1-mLogTamburi); */
+                if (mPlayer2 != null)
+                    mPlayer2.setVol((float) progress / (float) MAX_VOLUME);
             }
 
             @Override
@@ -301,130 +336,124 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         });
     }
 
-    public TextView[] getShrutiTextViews(){
+    public TextView[] getShrutiTextViews() {
         TextView[] arr =
                 {
-                        shruthiA, shruthiAs, shruthiB, shruthiBs, shruthiC, shruthiCs,
-                        shruthiD, shruthiDs, shruthiE, shruthiEs, shruthiF, shruthiFs, shruthiG, shruthiGs
+                        shruthiA, shruthiAs, shruthiB, shruthiC, shruthiCs,
+                        shruthiD, shruthiDs, shruthiE, shruthiF, shruthiFs, shruthiG, shruthiGs
                 };
 
         return arr;
     }
 
-    @OnClick({R.id.shruthi_a,R.id.shruthi_b,R.id.shruthi_c,R.id.shruthi_d,R.id.shruthi_e,R.id.shruthi_f, R.id.shruthi_g,
-            R.id.shruthi_as,R.id.shruthi_bs,R.id.shruthi_cs,R.id.shruthi_ds,R.id.shruthi_es,R.id.shruthi_fs, R.id.shruthi_gs})
+    @OnClick({R.id.shruthi_a, R.id.shruthi_b, R.id.shruthi_c, R.id.shruthi_d, R.id.shruthi_e, R.id.shruthi_f, R.id.shruthi_g,
+            R.id.shruthi_as, R.id.shruthi_cs, R.id.shruthi_ds, R.id.shruthi_fs, R.id.shruthi_gs})
 
-    public void shruthiClicked(View v){
+    public void shruthiClicked(View v) {
 
         TextView[] arr = getShrutiTextViews();
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.shruthi_a:
             default:
-                setTextColor(shruthiA,arr);
-                selectedShruthi= this.getResources().getString(R.string.shruthi_a);
+                setTextColor(shruthiA, arr);
+                selectedShruthi = this.getResources().getString(R.string.shruthi_a);
                 break;
             case R.id.shruthi_as:
-                setTextColor(shruthiAs,arr);
-                selectedShruthi=this.getResources().getString(R.string.shruthi_as);
+                setTextColor(shruthiAs, arr);
+                selectedShruthi = this.getResources().getString(R.string.shruthi_as);
                 break;
             case R.id.shruthi_b:
-                setTextColor(shruthiB,arr);
-                selectedShruthi=this.getResources().getString(R.string.shruthi_b);
-                break;
-            case R.id.shruthi_bs:
-                setTextColor(shruthiBs,arr);
-                selectedShruthi=this.getResources().getString(R.string.shruthi_bs);
+                setTextColor(shruthiB, arr);
+                selectedShruthi = this.getResources().getString(R.string.shruthi_b);
                 break;
             case R.id.shruthi_c:
-                setTextColor(shruthiC,arr);
-                selectedShruthi=this.getResources().getString(R.string.shruthi_c);
+                setTextColor(shruthiC, arr);
+                selectedShruthi = this.getResources().getString(R.string.shruthi_c);
                 break;
             case R.id.shruthi_cs:
-                setTextColor(shruthiCs,arr);
-                selectedShruthi=this.getResources().getString(R.string.shruthi_cs);
+                setTextColor(shruthiCs, arr);
+                selectedShruthi = this.getResources().getString(R.string.shruthi_cs);
                 break;
             case R.id.shruthi_d:
-                setTextColor(shruthiD,arr);
-                selectedShruthi=this.getResources().getString(R.string.shruthi_d);
+                setTextColor(shruthiD, arr);
+                selectedShruthi = this.getResources().getString(R.string.shruthi_d);
                 break;
             case R.id.shruthi_ds:
-                setTextColor(shruthiDs,arr);
-                selectedShruthi=this.getResources().getString(R.string.shruthi_ds);
+                setTextColor(shruthiDs, arr);
+                selectedShruthi = this.getResources().getString(R.string.shruthi_ds);
                 break;
             case R.id.shruthi_e:
-                setTextColor(shruthiE,arr);
-                selectedShruthi=this.getResources().getString(R.string.shruthi_e);
-                break;
-            case R.id.shruthi_es:
-                setTextColor(shruthiEs,arr);
-                selectedShruthi=this.getResources().getString(R.string.shruthi_es);
+                setTextColor(shruthiE, arr);
+                selectedShruthi = this.getResources().getString(R.string.shruthi_e);
                 break;
             case R.id.shruthi_f:
-                setTextColor(shruthiF,arr);
-                selectedShruthi=this.getResources().getString(R.string.shruthi_f);
+                setTextColor(shruthiF, arr);
+                selectedShruthi = this.getResources().getString(R.string.shruthi_f);
                 break;
             case R.id.shruthi_fs:
-                setTextColor(shruthiFs,arr);
-                selectedShruthi=this.getResources().getString(R.string.shruthi_fs);
+                setTextColor(shruthiFs, arr);
+                selectedShruthi = this.getResources().getString(R.string.shruthi_fs);
                 break;
             case R.id.shruthi_g:
-                setTextColor(shruthiG,arr);
-                selectedShruthi=this.getResources().getString(R.string.shruthi_g);
+                setTextColor(shruthiG, arr);
+                selectedShruthi = this.getResources().getString(R.string.shruthi_g);
                 break;
             case R.id.shruthi_gs:
-                setTextColor(shruthiGs,arr);
-                selectedShruthi=this.getResources().getString(R.string.shruthi_gs);
+                setTextColor(shruthiGs, arr);
+                selectedShruthi = this.getResources().getString(R.string.shruthi_gs);
                 break;
         }
-        playClicked();
+        //playClicked();
+        pauseClicked();
     }
 
 
-    @OnClick({R.id.bpm_70,R.id.bpm_80,R.id.bpm_90,R.id.bpm_100,R.id.bpm_110,R.id.bpm_120})
-    public void bpmClicked(View v){
+    @OnClick({R.id.bpm_70, R.id.bpm_80, R.id.bpm_90, R.id.bpm_100, R.id.bpm_110, R.id.bpm_120})
+    public void bpmClicked(View v) {
 
         TextView[] arr = getBpmTextViews();
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.bpm_70:
             default:
-                mSelectedBpm= this.getResources().getString(R.string.bpm_70);
-                setTextColor(bpm70,arr);
+                mSelectedBpm = this.getResources().getString(R.string.bpm_70);
+                setTextColor(bpm70, arr);
                 break;
             case R.id.bpm_80:
-                mSelectedBpm =this.getResources().getString(R.string.bpm_80);
-                setTextColor(bpm80,arr);
+                mSelectedBpm = this.getResources().getString(R.string.bpm_80);
+                setTextColor(bpm80, arr);
                 break;
             case R.id.bpm_90:
                 mSelectedBpm = this.getResources().getString(R.string.bpm_90);
-                setTextColor(bpm90,arr);
+                setTextColor(bpm90, arr);
                 break;
             case R.id.bpm_100:
                 mSelectedBpm = this.getResources().getString(R.string.bpm_100);
-                setTextColor(bpm100,arr);
+                setTextColor(bpm100, arr);
                 break;
             case R.id.bpm_110:
                 mSelectedBpm = this.getResources().getString(R.string.bpm_110);
-                setTextColor(bpm110,arr);
+                setTextColor(bpm110, arr);
                 break;
             case R.id.bpm_120:
                 mSelectedBpm = this.getResources().getString(R.string.bpm_120);
-                setTextColor(bpm120,arr);
+                setTextColor(bpm120, arr);
                 break;
         }
-        playClicked();
+        //playClicked();
+        pauseClicked();
     }
 
     private TextView[] getBpmTextViews() {
         return new TextView[]{
-                bpm70,bpm80,bpm90,bpm100,bpm110,bpm120
+                bpm70, bpm80, bpm90, bpm100, bpm110, bpm120
         };
     }
 
     private void setTextColor(TextView selectedTv, TextView[] unselectedTvArr) {
-        for(TextView unselectedTv : unselectedTvArr){
-            unselectedTv.setTextColor(ContextCompat.getColor(this,R.color.white));
+        for (TextView unselectedTv : unselectedTvArr) {
+            unselectedTv.setTextColor(ContextCompat.getColor(this, R.color.white));
         }
-        selectedTv.setTextColor(ContextCompat.getColor(this,R.color.progress_color));
+        selectedTv.setTextColor(ContextCompat.getColor(this, R.color.progress_color));
     }
 
 }

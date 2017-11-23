@@ -4,6 +4,7 @@
     <string name="Rupakatala">RupakaTala</string>
     <string name="Mishrachapu">MishraChapu</string>
     <string name="Khandachapu">KhandaChapu</string>
+    <string name="TishraAdi">TishraAditala</string>
     <string name="no_tala_file">Oops! Sorry, no tala file for the selected combination!</string>
     <string name="no_shruti_file">Oops! Sorry, no shruti file for the selected combination!</string>
     <string name="bpm_70">70</string>

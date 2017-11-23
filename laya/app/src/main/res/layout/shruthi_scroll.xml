@@ -2,7 +2,13 @@
 <HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <!--
+    A   B   CS   DS   F    G
+    AS  C   D    E    FS   GS
 
+    A   B   C   D   E   F    G
+    AS      CS  DS      FS   GS
+    -->
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,40 +43,27 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/shruthi_c"
+                android:id="@+id/shruthi_cs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/shruthi_scroll_tb_padding"
                 android:paddingTop="@dimen/shruthi_scroll_tb_padding"
                 android:paddingLeft="@dimen/shruthi_scroll_lr_padding"
                 android:paddingRight="@dimen/shruthi_scroll_lr_padding"
-                android:text="@string/shruthi_c"
+                android:text="C'"
                 android:textColor="@color/transparent_white"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/shruthi_d"
+                android:id="@+id/shruthi_ds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/shruthi_scroll_tb_padding"
                 android:paddingTop="@dimen/shruthi_scroll_tb_padding"
                 android:paddingLeft="@dimen/shruthi_scroll_lr_padding"
                 android:paddingRight="@dimen/shruthi_scroll_lr_padding"
-                android:text="@string/shruthi_d"
-                android:textColor="@color/transparent_white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/shruthi_e"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/shruthi_scroll_tb_padding"
-                android:paddingTop="@dimen/shruthi_scroll_tb_padding"
-                android:paddingLeft="@dimen/shruthi_scroll_lr_padding"
-                android:paddingRight="@dimen/shruthi_scroll_lr_padding"
-                android:text="@string/shruthi_e"
+                android:text="D'"
                 android:textColor="@color/transparent_white"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -121,54 +114,40 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/shruthi_bs"
+                android:id="@+id/shruthi_c"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/shruthi_scroll_tb_padding"
                 android:paddingTop="@dimen/shruthi_scroll_tb_padding"
                 android:paddingLeft="@dimen/shruthi_scroll_lr_padding"
                 android:paddingRight="@dimen/shruthi_scroll_lr_padding"
-                android:text="B"
+                android:text="@string/shruthi_c"
                 android:textColor="@color/transparent_white"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/shruthi_cs"
+                android:id="@+id/shruthi_d"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/shruthi_scroll_tb_padding"
                 android:paddingTop="@dimen/shruthi_scroll_tb_padding"
                 android:paddingLeft="@dimen/shruthi_scroll_lr_padding"
                 android:paddingRight="@dimen/shruthi_scroll_lr_padding"
-                android:text="C'"
-                android:textColor="@color/transparent_white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-
-            <TextView
-                android:id="@+id/shruthi_ds"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/shruthi_scroll_tb_padding"
-                android:paddingTop="@dimen/shruthi_scroll_tb_padding"
-                android:paddingLeft="@dimen/shruthi_scroll_lr_padding"
-                android:paddingRight="@dimen/shruthi_scroll_lr_padding"
-                android:text="D'"
+                android:text="@string/shruthi_d"
                 android:textColor="@color/transparent_white"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/shruthi_es"
+                android:id="@+id/shruthi_e"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/shruthi_scroll_tb_padding"
                 android:paddingTop="@dimen/shruthi_scroll_tb_padding"
                 android:paddingLeft="@dimen/shruthi_scroll_lr_padding"
                 android:paddingRight="@dimen/shruthi_scroll_lr_padding"
-                android:text="E"
+                android:text="@string/shruthi_e"
                 android:textColor="@color/transparent_white"
                 android:textSize="20sp"
                 android:textStyle="bold" />
