@@ -1,0 +1,19 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <!-- Active thumb color & Active track color(30% transparency) -->
+        <item name="colorControlActivated">@color/transparent_white</item>
+        <!-- Inactive thumb color -->
+        <item name="colorSwitchThumbNormal">@color/transparent_white</item>
+        <!-- Inactive track color(30% transparency) -->
+        <item name="android:colorForeground">@color/progress_color</item>
+    </style>
+
+    <color name="black">#000000</color>
+</resources>

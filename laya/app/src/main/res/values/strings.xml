@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">Layam</string>
+    <string name="app_desc"> - Carnatic Metronome</string>
+
+    <string name="Aditala">AdiTala</string>
+    <string name="Rupakatala">RupakaTala</string>
+    <string name="Mishrachapu">MishraChapu</string>
+    <string name="Khandachapu">KhandaChapu</string>
+    <string name="TishraAdi">TishraAdi</string>
+
+    <string name="AditalaMM">AdiTala Mohra-korvai</string>
+    <string name="RupakatalaMM">RupakaTala Mohra-korvai</string>
+    <string name="MishrachapuMM">MishraChapu Mohra-korvai</string>
+    <string name="KhandachapuMM">KhandaChapu Mohra-korvai</string>
+
+    <string name="no_tala_file">Oops! Sorry, no tala file for the selected combination!</string>
+    <string name="no_shruti_file">Oops! Sorry, no shruti file for the selected combination!</string>
+    <string name="bpm_70">70</string>
+    <string name="bpm_80">80</string>
+    <string name="bpm_90">90</string>
+    <string name="bpm_100">100</string>
+    <string name="bpm_110">110</string>
+    <string name="bpm_120">120</string>
+    <string name="shruthi_a">A</string>
+    <string name="shruthi_as">AS</string>
+    <string name="shruthi_b">B</string>
+    <string name="shruthi_bs">B</string>
+    <string name="shruthi_c">C</string>
+    <string name="shruthi_cs">CS</string>
+    <string name="shruthi_d">D</string>
+    <string name="shruthi_ds">DS</string>
+    <string name="shruthi_e">E</string>
+    <string name="shruthi_es">E</string>
+    <string name="shruthi_f">F</string>
+    <string name="shruthi_fs">FS</string>
+    <string name="shruthi_g">G</string>
+    <string name="shruthi_gs">GS</string>
+    <string name="kaala_v">V</string>
+    <string name="kaala_m">M</string>
+</resources>

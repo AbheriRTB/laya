@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:stretchColumns="*">
+
+        <TableRow>
+            <TextView
+                android:id="@+id/bpm_70"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/shruthi_scroll_tb_padding"
+                android:paddingTop="@dimen/shruthi_scroll_tb_padding"
+                android:paddingLeft="@dimen/shruthi_scroll_lr_padding"
+                android:paddingRight="@dimen/shruthi_scroll_lr_padding"
+                android:text="70"
+                android:textColor="@color/grayedOut"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/bpm_80"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/shruthi_scroll_tb_padding"
+                android:paddingTop="@dimen/shruthi_scroll_tb_padding"
+                android:paddingLeft="@dimen/shruthi_scroll_lr_padding"
+                android:paddingRight="@dimen/shruthi_scroll_lr_padding"
+                android:text="80"
+                android:textColor="@color/transparent_white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/bpm_90"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/shruthi_scroll_tb_padding"
+                android:paddingTop="@dimen/shruthi_scroll_tb_padding"
+                android:paddingLeft="@dimen/shruthi_scroll_lr_padding"
+                android:paddingRight="@dimen/shruthi_scroll_lr_padding"
+                android:text="90"
+                android:textColor="@color/grayedOut"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/bpm_100"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/shruthi_scroll_tb_padding"
+                android:paddingTop="@dimen/shruthi_scroll_tb_padding"
+                android:paddingLeft="@dimen/shruthi_scroll_lr_padding"
+                android:paddingRight="@dimen/shruthi_scroll_lr_padding"
+                android:text="100"
+                android:textColor="@color/grayedOut"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/bpm_110"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/shruthi_scroll_tb_padding"
+                android:paddingTop="@dimen/shruthi_scroll_tb_padding"
+                android:paddingLeft="@dimen/shruthi_scroll_lr_padding"
+                android:paddingRight="@dimen/shruthi_scroll_lr_padding"
+                android:text="110"
+                android:textColor="@color/grayedOut"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/bpm_120"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/shruthi_scroll_tb_padding"
+                android:paddingTop="@dimen/shruthi_scroll_tb_padding"
+                android:paddingLeft="@dimen/shruthi_scroll_lr_padding"
+                android:paddingRight="@dimen/shruthi_scroll_lr_padding"
+                android:text="120"
+                android:textColor="@color/transparent_white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </TableRow>
+
+    </TableLayout>
+
+</HorizontalScrollView>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!--
+    A   B   CS   DS   F    G
+    AS  C   D    E    FS   GS
+
+    A   B   C   D   E   F    G
+    AS      CS  DS      FS   GS
+    -->
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:stretchColumns="*">
+
+        <TableRow>
+            <TextView
+                android:id="@+id/shruthi_a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/shruthi_scroll_tb_padding"
+                android:paddingTop="@dimen/shruthi_scroll_tb_padding"
+                android:paddingLeft="@dimen/shruthi_scroll_lr_padding"
+                android:paddingRight="@dimen/shruthi_scroll_lr_padding"
+                android:text="@string/shruthi_a"
+                android:textColor="@color/transparent_white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/shruthi_b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/shruthi_scroll_tb_padding"
+                android:paddingTop="@dimen/shruthi_scroll_tb_padding"
+                android:paddingLeft="@dimen/shruthi_scroll_lr_padding"
+                android:paddingRight="@dimen/shruthi_scroll_lr_padding"
+                android:text="@string/shruthi_b"
+                android:textColor="@color/transparent_white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/shruthi_cs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/shruthi_scroll_tb_padding"
+                android:paddingTop="@dimen/shruthi_scroll_tb_padding"
+                android:paddingLeft="@dimen/shruthi_scroll_lr_padding"
+                android:paddingRight="@dimen/shruthi_scroll_lr_padding"
+                android:text="C'"
+                android:textColor="@color/transparent_white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/shruthi_ds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/shruthi_scroll_tb_padding"
+                android:paddingTop="@dimen/shruthi_scroll_tb_padding"
+                android:paddingLeft="@dimen/shruthi_scroll_lr_padding"
+                android:paddingRight="@dimen/shruthi_scroll_lr_padding"
+                android:text="D'"
+                android:textColor="@color/transparent_white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/shruthi_f"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/shruthi_scroll_tb_padding"
+                android:paddingTop="@dimen/shruthi_scroll_tb_padding"
+                android:paddingLeft="@dimen/shruthi_scroll_lr_padding"
+                android:paddingRight="@dimen/shruthi_scroll_lr_padding"
+                android:text="@string/shruthi_f"
+                android:textColor="@color/transparent_white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/shruthi_g"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/shruthi_scroll_tb_padding"
+                android:paddingTop="@dimen/shruthi_scroll_tb_padding"
+                android:paddingLeft="@dimen/shruthi_scroll_lr_padding"
+                android:paddingRight="@dimen/shruthi_scroll_lr_padding"
+                android:text="@string/shruthi_g"
+                android:textColor="@color/transparent_white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/shruthi_as"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:gravity="top"
+                android:paddingBottom="@dimen/shruthi_scroll_tb_padding"
+                android:paddingTop="@dimen/shruthi_scroll_tb_padding"
+                android:paddingLeft="@dimen/shruthi_scroll_lr_padding"
+                android:paddingRight="@dimen/shruthi_scroll_lr_padding"
+                android:text="A'"
+                android:textColor="@color/transparent_white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/shruthi_c"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/shruthi_scroll_tb_padding"
+                android:paddingTop="@dimen/shruthi_scroll_tb_padding"
+                android:paddingLeft="@dimen/shruthi_scroll_lr_padding"
+                android:paddingRight="@dimen/shruthi_scroll_lr_padding"
+                android:text="@string/shruthi_c"
+                android:textColor="@color/transparent_white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/shruthi_d"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/shruthi_scroll_tb_padding"
+                android:paddingTop="@dimen/shruthi_scroll_tb_padding"
+                android:paddingLeft="@dimen/shruthi_scroll_lr_padding"
+                android:paddingRight="@dimen/shruthi_scroll_lr_padding"
+                android:text="@string/shruthi_d"
+                android:textColor="@color/transparent_white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/shruthi_e"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/shruthi_scroll_tb_padding"
+                android:paddingTop="@dimen/shruthi_scroll_tb_padding"
+                android:paddingLeft="@dimen/shruthi_scroll_lr_padding"
+                android:paddingRight="@dimen/shruthi_scroll_lr_padding"
+                android:text="@string/shruthi_e"
+                android:textColor="@color/transparent_white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/shruthi_fs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/shruthi_scroll_tb_padding"
+                android:paddingTop="@dimen/shruthi_scroll_tb_padding"
+                android:paddingLeft="@dimen/shruthi_scroll_lr_padding"
+                android:paddingRight="@dimen/shruthi_scroll_lr_padding"
+                android:text="F'"
+                android:textColor="@color/transparent_white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/shruthi_gs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/shruthi_scroll_tb_padding"
+                android:paddingTop="@dimen/shruthi_scroll_tb_padding"
+                android:paddingLeft="@dimen/shruthi_scroll_lr_padding"
+                android:paddingRight="@dimen/shruthi_scroll_lr_padding"
+                android:text="G'"
+                android:textColor="@color/transparent_white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+
+    </TableLayout>
+
+</HorizontalScrollView>

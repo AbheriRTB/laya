@@ -1,0 +1,8 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="heading_ts">10sp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="shruthi_scroll_lr_padding">6dp</dimen>
+    <dimen name="shruthi_scroll_tb_padding">2dp</dimen>
+</resources>
