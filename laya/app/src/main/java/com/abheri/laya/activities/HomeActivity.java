@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.View;
@@ -145,6 +146,7 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         appBarLayout.addOnOffsetChangedListener(this);
         createList(); // Creates the list of all the audios
         mCustomListAdapter = new ListAdapter(this, items, mPositionClicked);
+        ViewCompat.setNestedScrollingEnabled(listView,true);
         listView.setAdapter(mCustomListAdapter);
         listView.setOnItemClickListener(this);
         kaalaSwitch.setOnCheckedChangeListener(this); // switch checkedchange for kaala
