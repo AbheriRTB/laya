@@ -7,10 +7,10 @@
     <string name="Khandachapu">KhandaChapu</string>
     <string name="TishraAdi">TishraAdi</string>
 
-    <string name="AditalaMM">AdiTala-Mohra-koravai</string>
-    <string name="RupakatalaMM">RupakaTala-Mohra-koravai</string>
-    <string name="MishrachapuMM">MishraChapu-Mohra-koravai</string>
-    <string name="KhandachapuMM">KhandaChapu-Mohra-koravai</string>
+    <string name="AditalaMM">AdiTala Mohra-korvai</string>
+    <string name="RupakatalaMM">RupakaTala Mohra-korvai</string>
+    <string name="MishrachapuMM">MishraChapu Mohra-korvai</string>
+    <string name="KhandachapuMM">KhandaChapu Mohra-korvai</string>
 
     <string name="no_tala_file">Oops! Sorry, no tala file for the selected combination!</string>
     <string name="no_shruti_file">Oops! Sorry, no shruti file for the selected combination!</string>
