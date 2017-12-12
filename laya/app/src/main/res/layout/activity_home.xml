@@ -225,7 +225,7 @@
                     android:paddingLeft="10dp"
                     android:text="@string/app_name"
                     android:textColor="@color/transparent_white"
-                    android:textSize="26sp"
+                    android:textSize="21sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -235,8 +235,18 @@
                     android:paddingLeft="10dp"
                     android:text="@string/app_desc"
                     android:textColor="@color/transparent_white"
-                    android:textSize="15sp"
+                    android:textSize="21sp"
                     android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/app_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="gravity"
+                    android:paddingLeft="10dp"
+                    android:text="v1.0"
+                    android:textColor="@color/transparent_white"
+                    android:textSize="10sp"
+                    android:textStyle="italic" />
 
             </android.support.v7.widget.Toolbar>
 

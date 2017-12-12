@@ -110,6 +110,8 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
     RadioButton shrutiMa;
     @InjectView(R.id.shruti_ni)
     RadioButton shrutiNi;
+    @InjectView(R.id.app_version)
+    TextView appVersion;
 
 
     private ArrayList<AudioObject> items = new ArrayList<AudioObject>(); // items for the list
@@ -143,6 +145,9 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         ButterKnife.inject(this);
         self = this;
 
+        String ver = "v" + getVersionString();
+        appVersion.setText(ver);
+
         appBarLayout.addOnOffsetChangedListener(this);
         createList(); // Creates the list of all the audios
         mCustomListAdapter = new ListAdapter(this, items, mPositionClicked);
@@ -159,7 +164,7 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         long inst = getAppFirstInstallTime(self);
         long curr = System.currentTimeMillis();
         long diff = (curr-inst)/1000;
-        Toast.makeText(this, "AppInstalled: "+diff+" sec back.", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "AppInstalled: "+diff+" sec back.", Toast.LENGTH_LONG).show();
     }
 
     private void initialSetUp() {
@@ -460,9 +465,6 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
 
     @OnClick({R.id.shruthi_a, R.id.shruthi_b, R.id.shruthi_c, R.id.shruthi_d, R.id.shruthi_e, R.id.shruthi_f, R.id.shruthi_g,
             R.id.shruthi_as, R.id.shruthi_cs, R.id.shruthi_ds, R.id.shruthi_fs, R.id.shruthi_gs})
-
-    //@OnClick({R.id.shruthi_a, R.id.shruthi_e})
-
     public void shruthiClicked(View v) {
 
         TextView[] arr = getShrutiTextViews();
@@ -522,11 +524,18 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
     }
 
 
-    //@OnClick({R.id.bpm_70, R.id.bpm_80, R.id.bpm_90, R.id.bpm_100, R.id.bpm_110, R.id.bpm_120})
-    @OnClick({R.id.bpm_80, R.id.bpm_120})
+    //TODO: Change this for production app
+    @OnClick({R.id.bpm_70, R.id.bpm_80, R.id.bpm_90, R.id.bpm_100, R.id.bpm_110, R.id.bpm_120})
+    //@OnClick({R.id.bpm_80, R.id.bpm_120})
     public void bpmClicked(View v) {
 
         TextView[] arr = getBpmTextViews();
+
+        //TODO: Remove this for production app
+        if(v.getId()!= R.id.bpm_80 && v.getId()!=R.id.bpm_120){
+            Toast.makeText(self, "Coming Soon...", Toast.LENGTH_SHORT).show();
+            return;
+        }
         switch (v.getId()) {
             case R.id.bpm_70:
             default:
@@ -566,8 +575,20 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
 
     private void setTextColor(TextView selectedTv, TextView[] unselectedTvArr) {
         for (TextView unselectedTv : unselectedTvArr) {
-            unselectedTv.setTextColor(ContextCompat.getColor(this, R.color.white));
+            unselectedTv.setTextColor(ContextCompat.getColor(this, R.color.grayedOut));
+
+            //TODO: Remove this for Production app
+            //If 80 or 120 BPM, render in white color
+            if(unselectedTv.getText().equals("80") || unselectedTv.getText().equals("120")){
+                unselectedTv.setTextColor(ContextCompat.getColor(this, R.color.white));
+            } //TODO: Remove this for Production app
+            //TODO: Remove this for Production app
+            //If it is not BPM, render in white color
+            if(!unselectedTv.getText().toString().endsWith("0")){
+                unselectedTv.setTextColor(ContextCompat.getColor(this, R.color.white));
+            }
         }
+
         selectedTv.setTextColor(ContextCompat.getColor(this, R.color.progress_color));
     }
 
@@ -595,6 +616,21 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
             //should never happen
             return 0;
         }
+    }
+
+    public String getVersionString(){
+        int v = 0;
+        String vn = "";
+        try {
+            String pkgname =self.getPackageName();
+            PackageManager pm = self.getPackageManager();
+            v = pm.getPackageInfo(pkgname, 0).versionCode;
+            vn = pm.getPackageInfo(pkgname, 0).versionName;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return vn;
     }
 
 }

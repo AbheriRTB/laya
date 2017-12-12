@@ -11,4 +11,5 @@
     <color name="white">#ffffff</color>
     <color name="transparent">#ffffff</color>
     <color name="progress_color">#FFFF4400</color>
+    <color name="grayedOut">#ffaaaaaa</color>
 </resources>
