@@ -83,7 +83,7 @@ public class LoopingPlayer {
         stop();
         for (int i = 0; i < mp.length; i++) {
             mp[i] = MediaPlayer.create(context, resourceId);
-            mp[i].setOnCompletionListener(completionListener);
+            mp[i].setOnCompletionListener(this.completionListener);
         }
 
         mp[0].setNextMediaPlayer(mp[1]);
@@ -100,7 +100,7 @@ public class LoopingPlayer {
     public void play() {
         if (state == STATE_PAUSED) {
             mp[mediaPlayerIndex].start();
-            Log.d("LoopingPlayer", "playing");
+            Log.d("layaDebug", "playing");
             state = STATE_PLAYING;
         }
     }
@@ -131,6 +131,18 @@ public class LoopingPlayer {
         for(int i = 0 ; i < mp.length ; i++) {
             if (mp[i] != null) {
                 mp[i].stop();
+                if(mp[i].isPlaying()) {
+                    mp[i].release();
+                }
+            }
+        }
+        state = STATE_STOP;
+    }
+
+    public void stop1() {
+        for(int i = 0 ; i < mp.length ; i++) {
+            if (mp[i] != null) {
+                mp[i].stop();
 
                 if(mp[i].isPlaying()) {
                     mp[i].release();
@@ -139,6 +151,7 @@ public class LoopingPlayer {
         }
         state = STATE_STOP;
     }
+
 
     /**
      * set vol for every mediaplayer
@@ -156,14 +169,14 @@ public class LoopingPlayer {
     /**
      * internal listener which handles looping thing
      */
-    private MediaPlayer.OnCompletionListener completionListener = new OnCompletionListener() {
+    private MediaPlayer.OnCompletionListener completionListener1 = new OnCompletionListener() {
 
         @Override
         public void onCompletion(MediaPlayer curmp) {
             int mpEnds = 0;
             int mpPlaying = 0;
             int mpNext = 0;
-            Log.d("layaDebug", "curmpMedia Player " + curmp);
+            Log.d("layaDebug", "CompletionListener:");
             if(curmp == mp[0]) {
                 mpEnds = 0;
                 mpPlaying = 1;
@@ -184,9 +197,13 @@ public class LoopingPlayer {
                 Log.d("layaDebug", "ELSE");
             }
 
+            mp[mpEnds].stop();
+            mp[mpEnds].reset();
+            mp[mpEnds].release();
+
             // as we have set mp2 mp1's next, so index will be 1
             mediaPlayerIndex = mpPlaying;
-            Log.d("LoopingPlayer", "Media Player " + mpEnds);
+            Log.d("layaDebug", "E|P|N  " + mpEnds+"|"+mpPlaying+"|"+mpNext);
             try {
                 // mp3 is already playing release it
                 if (mp[mpNext] != null) {
@@ -203,11 +220,74 @@ public class LoopingPlayer {
                 // set vol
                 mp[mpNext].setVolume(vol, vol);
                 // set nextMediaPlayer
-                Log.d("layaDebug", mpPlaying + "  " + mpNext);
-                Log.d("layaDebug", mp[mpPlaying] + "  " + mp[mpNext]);
                 mp[mpPlaying].setNextMediaPlayer(mp[mpNext]);
                 // set nextMediaPlayer vol
                 mp[mpPlaying].setVolume(vol, vol);
+                mp[mpPlaying].start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    /**
+     * internal listener which handles looping thing
+     */
+    private MediaPlayer.OnCompletionListener completionListener = new OnCompletionListener() {
+
+        @Override
+        public void onCompletion(MediaPlayer curmp) {
+            int mpEnds = 0;
+            int mpPlaying = 0;
+            int mpNext = 0;
+            Log.d("layaDebug", "CompletionListener:");
+            if(curmp == mp[0]) {
+                mpEnds = 0;
+                mpPlaying = 1;
+                mpNext = 2;
+            }
+            else if(curmp == mp[1]) {
+                mpEnds = 1;
+                mpPlaying = 2;
+                mpNext = 0;  // corrected, else index out of range
+            }
+            else if(curmp == mp[2]) {
+                mpEnds = 2;
+                mpPlaying = 0; // corrected, else index out of range
+                mpNext = 1; // corrected, else index out of range
+            }
+            else{
+                //currmp isnt anyone of the mp list. so the mpEnds and mpPlaying = 0
+                Log.d("layaDebug", "ELSE");
+            }
+
+            //mp[mpEnds].stop();
+            //mp[mpEnds].release();
+
+            // as we have set mp2 mp1's next, so index will be 1
+            mediaPlayerIndex = mpPlaying;
+            Log.d("layaDebug", "E|P|N  " + mpEnds+"|"+mpPlaying+"|"+mpNext);
+            try {
+                // mp3 is already playing release it
+                if (mp[mpNext] != null) {
+                    mp[mpNext].release();
+                    //mp[mpNext].stop();
+                }
+                // if we are playing uri
+                if (filePlaying == URI_PLAYING) {
+                    mp[mpNext] = MediaPlayer.create(context, uri);
+                } else {
+                    mp[mpNext] = MediaPlayer.create(context, resourceId);
+                }
+                // at listener to mp3
+                mp[mpNext].setOnCompletionListener(this);
+                // set vol
+                mp[mpNext].setVolume(vol, vol);
+                // set nextMediaPlayer
+                mp[mpPlaying].setNextMediaPlayer(mp[mpNext]);
+                // set nextMediaPlayer vol
+                mp[mpPlaying].setVolume(vol, vol);
+                mp[mpPlaying].start();
             } catch (Exception e) {
                 e.printStackTrace();
             }

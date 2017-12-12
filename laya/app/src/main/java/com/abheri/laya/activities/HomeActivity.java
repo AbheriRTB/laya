@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -34,7 +36,8 @@ import butterknife.OnClick;
  * Created by sahana on 16/7/17.
  */
 
-public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetChangedListener, AdapterView.OnItemClickListener, CompoundButton.OnCheckedChangeListener {
+public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetChangedListener,
+        AdapterView.OnItemClickListener, CompoundButton.OnCheckedChangeListener {
 
     @InjectView(R.id.appbar)
     AppBarLayout appBarLayout;
@@ -90,6 +93,17 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
     TextView shruthiG;
     @InjectView(R.id.shruthi_gs)
     TextView shruthiGs;
+    @InjectView(R.id.shruti_base)
+    RadioGroup shrutiBase;
+    @InjectView(R.id.shruti_sa)
+    RadioButton shrutiSa;
+    @InjectView(R.id.shruti_pa)
+    RadioButton shrutiPa;
+    @InjectView(R.id.shruti_ma)
+    RadioButton shrutiMa;
+    @InjectView(R.id.shruti_ni)
+    RadioButton shrutiNi;
+
 
     private ArrayList<AudioObject> items = new ArrayList<AudioObject>(); // items for the list
 
@@ -102,6 +116,7 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
     String selectedShruthi;
     String selectedKaala;
     String selectedTala;
+    String selectedShrutiSwara;
     private String mSelectedBpm;
     int mridangamClipToPlay, tamburiClipToPlay;
     String mridangamFileNameToPlay, tamburiFileNameToPlay;
@@ -131,14 +146,25 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         mPlayer = new LoopingPlayer(this);
         mPlayer2 = new LoopingPlayer(this);
 
-        selectedShruthi = this.getResources().getString(R.string.shruthi_c);
-        mSelectedBpm = this.getResources().getString(R.string.bpm_70);
+        selectedShruthi = this.getResources().getString(R.string.shruthi_a);
+        mSelectedBpm = this.getResources().getString(R.string.bpm_80);
         selectedTala = this.getResources().getString(R.string.Aditala);
-        setTextColor(shruthiC, getShrutiTextViews());
-        setTextColor(bpm70, getBpmTextViews());
+        selectedShrutiSwara = "Sa";
+        setTextColor(shruthiA, getShrutiTextViews());
+        setTextColor(bpm80, getBpmTextViews());
         kaalaSwitch.setChecked(false);
         setAudioFileName(self);
         setSeekbarProgress();
+
+        shrutiBase.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                getSelectedShrutiSwara();
+                pauseClicked();
+            }
+        });
     }
 
     private void setInitialVolume() {
@@ -156,11 +182,16 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         items.add(setAudioObject(this.getResources().getString(R.string.Rupakatala)));
         items.add(setAudioObject(this.getResources().getString(R.string.Khandachapu)));
         items.add(setAudioObject(this.getResources().getString(R.string.TishraAdi)));
+        items.add(setAudioObject(this.getResources().getString(R.string.AditalaMM)));
+        items.add(setAudioObject(this.getResources().getString(R.string.MishrachapuMM)));
+        items.add(setAudioObject(this.getResources().getString(R.string.RupakatalaMM)));
+        items.add(setAudioObject(this.getResources().getString(R.string.KhandachapuMM)));
     }
 
     public void setAudioFileName(Context c) {
 
-        tamburiFileNameToPlay = "shruti_" + selectedShruthi.toLowerCase();
+        selectedShrutiSwara=getSelectedShrutiSwara();
+        tamburiFileNameToPlay =  selectedShruthi.toLowerCase()+"_"+ selectedShrutiSwara;
         tamburiClipToPlay = c.getResources().getIdentifier(tamburiFileNameToPlay, "raw", self.getPackageName());
         //if(tamburiClipToPlay == 0)
         //    tamburiClipToPlay = c.getResources().getIdentifier("shruti_a", "raw", self.getPackageName());
@@ -172,6 +203,7 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
             selectedKaala = this.getResources().getString(R.string.kaala_m);
         }
         selectedTala = items.get(mPositionClicked[0]).getAudioName();
+
         Log.d("HomeActivity", "selectedTala:: " + selectedTala);
         Log.d("HomeActivity", "selectedShruthi:: " + selectedShruthi);
         Log.d("HomeActivity", "selectedKaala:: " + selectedKaala);
@@ -185,6 +217,30 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
 
         Log.d("layaDebug", tamburiFileNameToPlay.toString() + " " + tamburiClipToPlay);
         Log.d("layaDebug", mridangamFileNameToPlay.toString() + " " + mridangamClipToPlay);
+    }
+
+    public String getSelectedShrutiSwara() {
+        // Is the button now checked?
+        int selectedRB = shrutiBase.getCheckedRadioButtonId();
+        String swara="sa";
+
+        // Check which radio button was clicked
+        switch(selectedRB) {
+            case R.id.shruti_sa:
+                swara="sa";
+                break;
+            case R.id.shruti_pa:
+                swara="pa";
+                break;
+            case R.id.shruti_ma:
+                swara="ma";
+                break;
+            case R.id.shruti_ni:
+                swara="ni";
+                break;
+        }
+
+        return swara;
     }
 
     public AudioObject setAudioObject(String name) {
@@ -346,8 +402,10 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         return arr;
     }
 
-    @OnClick({R.id.shruthi_a, R.id.shruthi_b, R.id.shruthi_c, R.id.shruthi_d, R.id.shruthi_e, R.id.shruthi_f, R.id.shruthi_g,
+    /*@OnClick({R.id.shruthi_a, R.id.shruthi_b, R.id.shruthi_c, R.id.shruthi_d, R.id.shruthi_e, R.id.shruthi_f, R.id.shruthi_g,
             R.id.shruthi_as, R.id.shruthi_cs, R.id.shruthi_ds, R.id.shruthi_fs, R.id.shruthi_gs})
+    */
+    @OnClick({R.id.shruthi_a, R.id.shruthi_e})
 
     public void shruthiClicked(View v) {
 
@@ -408,7 +466,8 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
     }
 
 
-    @OnClick({R.id.bpm_70, R.id.bpm_80, R.id.bpm_90, R.id.bpm_100, R.id.bpm_110, R.id.bpm_120})
+    //@OnClick({R.id.bpm_70, R.id.bpm_80, R.id.bpm_90, R.id.bpm_100, R.id.bpm_110, R.id.bpm_120})
+    @OnClick({R.id.bpm_80, R.id.bpm_120})
     public void bpmClicked(View v) {
 
         TextView[] arr = getBpmTextViews();
