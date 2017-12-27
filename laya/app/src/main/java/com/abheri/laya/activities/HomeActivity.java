@@ -1,6 +1,9 @@
 package com.abheri.laya.activities;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -14,6 +17,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.SwitchCompat;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,6 +33,7 @@ import android.widget.Toast;
 import com.abheri.laya.R;
 import com.abheri.laya.adapters.ListAdapter;
 import com.abheri.laya.models.AudioObject;
+import com.abheri.laya.util.EventBroadcastReceiver;
 import com.abheri.laya.util.SoundPoolManager;
 
 import java.io.File;
@@ -156,6 +161,9 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         listView.setOnItemClickListener(this);
         kaalaSwitch.setOnCheckedChangeListener(this); // switch checkedchange for kaala
         initialSetUp();
+
+        //IntentFilter phoneStateFilter = new IntentFilter(Intent.ACTION_CALL);
+        //registerReceiver(new EventBroadcastReceiver(), phoneStateFilter);
     }
 
     @Override
@@ -632,5 +640,4 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
 
         return vn;
     }
-
 }
