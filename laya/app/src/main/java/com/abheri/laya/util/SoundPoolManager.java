@@ -109,4 +109,8 @@ public class SoundPoolManager {
         volume = vol;
         soundPool.setVolume(streamID, volume, volume);
     }
+
+    public float getVol(){
+        return volume;
+    }
 }

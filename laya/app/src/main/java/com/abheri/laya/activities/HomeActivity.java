@@ -1,12 +1,15 @@
 package com.abheri.laya.activities;
 
-import android.content.BroadcastReceiver;
+import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,12 +19,15 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
-import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -33,16 +39,15 @@ import android.widget.Toast;
 import com.abheri.laya.R;
 import com.abheri.laya.adapters.ListAdapter;
 import com.abheri.laya.models.AudioObject;
-import com.abheri.laya.util.EventBroadcastReceiver;
 import com.abheri.laya.util.SoundPoolManager;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import butterknife.OnTouch;
 
 /**
  * Created by sahana on 16/7/17.
@@ -117,6 +122,10 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
     RadioButton shrutiNi;
     @InjectView(R.id.app_version)
     TextView appVersion;
+    @InjectView(R.id.mute_mridanga)
+    Button muteMridanga;
+    @InjectView(R.id.mute_tamburi)
+    Button muteTamburi;
 
 
     private ArrayList<AudioObject> items = new ArrayList<AudioObject>(); // items for the list
@@ -137,8 +146,10 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
     int mridangamClipToPlay, tamburiClipToPlay;
     String mridangamFileNameToPlay, tamburiFileNameToPlay;
     final int MAX_VOLUME = 100;
-    boolean isKorvai=false;
+    boolean isKorvai = false;
     MediaPlayer kPlayer;
+    private boolean isPlaying = false;
+    private int loadingDelay = 1000;
 
     Context self;
 
@@ -150,13 +161,15 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         ButterKnife.inject(this);
         self = this;
 
+        loadPreferences();
+
         String ver = "v" + getVersionString();
         appVersion.setText(ver);
 
         appBarLayout.addOnOffsetChangedListener(this);
         createList(); // Creates the list of all the audios
         mCustomListAdapter = new ListAdapter(this, items, mPositionClicked);
-        ViewCompat.setNestedScrollingEnabled(listView,true);
+        ViewCompat.setNestedScrollingEnabled(listView, true);
         listView.setAdapter(mCustomListAdapter);
         listView.setOnItemClickListener(this);
         kaalaSwitch.setOnCheckedChangeListener(this); // switch checkedchange for kaala
@@ -167,12 +180,15 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         long inst = getAppFirstInstallTime(self);
         long curr = System.currentTimeMillis();
-        long diff = (curr-inst)/1000;
+        long diff = (curr - inst) / 1000;
         //Toast.makeText(this, "AppInstalled: "+diff+" sec back.", Toast.LENGTH_LONG).show();
+
+        setCurrentActivity(this);
+
     }
 
     private void initialSetUp() {
@@ -190,6 +206,10 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         setAudioFileName(self);
         setSeekbarProgress();
 
+        grayMuteButton(muteMridanga);
+        grayMuteButton(muteTamburi);
+
+
         soundPlayer_m = new SoundPoolManager(self, mridangamClipToPlay);
         soundPlayer_t = new SoundPoolManager(self, tamburiClipToPlay);
 
@@ -201,6 +221,12 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
                 pauseClicked();
             }
         });
+
+        if (isPlaying) {
+            showPause();
+        } else {
+            hidePause();
+        }
     }
 
     private void setInitialVolume() {
@@ -244,19 +270,19 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         Log.d("HomeActivity", "selectedKaala:: " + selectedKaala);
         Log.d("HomeActivity", "selectedBPM:: " + mSelectedBpm);
 
-        if(selectedTala.toLowerCase().contains("korvai")){
-            if(selectedTala.toLowerCase().contains("aditala"))
-                mridangamFileNameToPlay="aditala_mohra_korvai";
-            if(selectedTala.toLowerCase().contains("rupakatala"))
-                mridangamFileNameToPlay="rupakatala_mohra_korvai";
-            if(selectedTala.toLowerCase().contains("mishrachapu"))
-                mridangamFileNameToPlay="mishrachapu_mohra_korvai";
-            if(selectedTala.toLowerCase().contains("khandachapu"))
-                mridangamFileNameToPlay="khandachapu_mohra_korvai";
+        if (selectedTala.toLowerCase().contains("korvai")) {
+            if (selectedTala.toLowerCase().contains("aditala"))
+                mridangamFileNameToPlay = "aditala_mohra_korvai";
+            if (selectedTala.toLowerCase().contains("rupakatala"))
+                mridangamFileNameToPlay = "rupakatala_mohra_korvai";
+            if (selectedTala.toLowerCase().contains("mishrachapu"))
+                mridangamFileNameToPlay = "mishrachapu_mohra_korvai";
+            if (selectedTala.toLowerCase().contains("khandachapu"))
+                mridangamFileNameToPlay = "khandachapu_mohra_korvai";
 
             isKorvai = true;
 
-        }else{
+        } else {
             mridangamFileNameToPlay = selectedTala + "_" + selectedShruthi + "_" + selectedKaala + "_" + String.valueOf(mSelectedBpm);
             mridangamFileNameToPlay = mridangamFileNameToPlay.toLowerCase();
         }
@@ -320,11 +346,13 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
 
         //Korvai files are long hence soundpool wouldn't play. Need to use
         //MediaPlayer.
-        if(isKorvai){
+        if (isKorvai) {
             kPlayer = MediaPlayer.create(self, mridangamClipToPlay);
             kPlayer.start();
             float vol = (float) sbMridanga.getProgress() / (float) MAX_VOLUME;
             kPlayer.setVolume(vol, vol);
+
+            isPlaying = true;
             return;
         }
 
@@ -332,16 +360,17 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         //If not Korvai, do the normal stuff
         try {
             soundPlayer_m.load(mridangamClipToPlay);
-            while(!soundPlayer_m.loaded){}
+            while (!soundPlayer_m.loaded) {
+            }
 
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    //Do something after 100ms
+                    //Wait to load and play after 500ms
                     soundPlayer_m.play(mridangamClipToPlay);
                 }
-            }, 300);
+            }, loadingDelay);
 
             setInitialVolume();
         } catch (Exception e) {
@@ -354,15 +383,17 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    //Do something after 100ms
+                    //Wait to load and play after 500ms
                     soundPlayer_t.play(mridangamClipToPlay);
                 }
-            }, 300);
+            }, loadingDelay);
             setInitialVolume();
         } catch (Exception e) {
             Log.d("Exception", "E:: " + e.toString());
             Toast.makeText(this, R.string.no_shruti_file, Toast.LENGTH_SHORT).show();
         }
+
+        isPlaying = true;
     }
 
     @OnClick(R.id.btn_pause)
@@ -371,12 +402,15 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         soundPlayer_m.stop();
         soundPlayer_t.stop();
 
-        if(isKorvai && kPlayer!=null){
+        if (isKorvai && kPlayer != null) {
             kPlayer.stop();
             kPlayer.release();
             kPlayer = null;
         }
-        isKorvai=false;
+        isKorvai = false;
+
+        isPlaying = false;
+
     }
 
 
@@ -424,11 +458,13 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (soundPlayer_m != null)
+                if (soundPlayer_m != null) {
                     soundPlayer_m.setVol((float) progress / (float) MAX_VOLUME);
-                if(kPlayer != null)
+                    grayMuteButton(muteMridanga);
+                }
+                if (kPlayer != null)
                     kPlayer.setVolume((float) progress / (float) MAX_VOLUME,
-                                        (float) progress / (float) MAX_VOLUME);
+                            (float) progress / (float) MAX_VOLUME);
             }
 
             @Override
@@ -445,8 +481,10 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (soundPlayer_t != null)
+                if (soundPlayer_t != null) {
                     soundPlayer_t.setVol((float) progress / (float) MAX_VOLUME);
+                    grayMuteButton(muteTamburi);
+                }
             }
 
             @Override
@@ -469,6 +507,39 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
                 };
 
         return arr;
+    }
+
+    @OnClick({R.id.mute_tamburi, R.id.mute_mridanga})
+    public void muteClicked(View v) {
+
+        switch (v.getId()) {
+
+            case R.id.mute_mridanga:
+                if (soundPlayer_m.getVol() < 0.1) {
+                    int mProgress = sbMridanga.getProgress();
+                    soundPlayer_m.setVol((float) mProgress / (float) MAX_VOLUME);
+                    grayMuteButton(muteMridanga);
+                } else {
+                    soundPlayer_m.setVol(0.0f);
+                    v.getBackground().setColorFilter(null);
+                }
+                break;
+            case R.id.mute_tamburi:
+                if (soundPlayer_t.getVol() < 0.1) {
+                    int sProgress = sbTamburi.getProgress();
+                    soundPlayer_t.setVol((float) sProgress / (float) MAX_VOLUME);
+                    grayMuteButton(muteTamburi);
+                } else {
+                    soundPlayer_t.setVol(0.0f);
+                    v.getBackground().setColorFilter(null);
+                }
+                break;
+        }
+    }
+
+    private void grayMuteButton(Button mbutton){
+        mbutton.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.grayedOut),
+                PorterDuff.Mode.MULTIPLY);
     }
 
     @OnClick({R.id.shruthi_a, R.id.shruthi_b, R.id.shruthi_c, R.id.shruthi_d, R.id.shruthi_e, R.id.shruthi_f, R.id.shruthi_g,
@@ -540,7 +611,7 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         TextView[] arr = getBpmTextViews();
 
         //TODO: Remove this for production app
-        if(v.getId()!= R.id.bpm_80 && v.getId()!=R.id.bpm_120){
+        if (v.getId() != R.id.bpm_80 && v.getId() != R.id.bpm_120) {
             Toast.makeText(self, "Coming Soon...", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -587,12 +658,12 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
 
             //TODO: Remove this for Production app
             //If 80 or 120 BPM, render in white color
-            if(unselectedTv.getText().equals("80") || unselectedTv.getText().equals("120")){
+            if (unselectedTv.getText().equals("80") || unselectedTv.getText().equals("120")) {
                 unselectedTv.setTextColor(ContextCompat.getColor(this, R.color.white));
             } //TODO: Remove this for Production app
             //TODO: Remove this for Production app
             //If it is not BPM, render in white color
-            if(!unselectedTv.getText().toString().endsWith("0")){
+            if (!unselectedTv.getText().toString().endsWith("0")) {
                 unselectedTv.setTextColor(ContextCompat.getColor(this, R.color.white));
             }
         }
@@ -601,19 +672,19 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
     }
 
 
-
     /**
      * The time at which the app was first installed. Units are as per currentTimeMillis().
+     *
      * @param context
      * @return
      */
-    public static long getAppFirstInstallTime(Context context){
+    public static long getAppFirstInstallTime(Context context) {
         PackageInfo packageInfo;
         try {
-            if(Build.VERSION.SDK_INT>8/*Build.VERSION_CODES.FROYO*/ ){
+            if (Build.VERSION.SDK_INT > 8/*Build.VERSION_CODES.FROYO*/) {
                 packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
                 return packageInfo.firstInstallTime;
-            }else{
+            } else {
                 //firstinstalltime unsupported return last update time not first install time
                 ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
                 String sAppFile = appInfo.sourceDir;
@@ -626,11 +697,11 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         }
     }
 
-    public String getVersionString(){
+    public String getVersionString() {
         int v = 0;
         String vn = "";
         try {
-            String pkgname =self.getPackageName();
+            String pkgname = self.getPackageName();
             PackageManager pm = self.getPackageManager();
             v = pm.getPackageInfo(pkgname, 0).versionCode;
             vn = pm.getPackageInfo(pkgname, 0).versionName;
@@ -640,4 +711,78 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
 
         return vn;
     }
+
+
+    private void savePreferences() {
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("state", isPlaying);
+        editor.commit();   // I missed to save the data to preference here,.
+    }
+
+    private void loadPreferences() {
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        Boolean state = sharedPreferences.getBoolean("state", false);
+        isPlaying = state;
+    }
+
+    private void clearPreferences() {
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("state", false);
+        editor.commit();   // I missed to save the data to preference here,.
+    }
+
+
+    public void onDestroy() {
+        super.onDestroy();
+        clearPreferences();
+        clearReferences();
+        pauseClicked();
+    }
+
+    @Override
+    public void onBackPressed() {
+        //savePreferences();
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this, R.style.MyDialogTheme);
+
+        alert.setTitle("Do you want to stop Layam audio?");
+        // alert.setMessage("Message");
+
+        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //Your action here
+                Activity ca = getCurrentActivity();
+                if (ca != null)
+                    ca.finish();
+            }
+        });
+
+        alert.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                });
+
+        alert.show();
+    }
+
+    private Activity mCurrentActivity = null;
+
+    public Activity getCurrentActivity() {
+        return mCurrentActivity;
+    }
+
+    public void setCurrentActivity(Activity mCurrentActivity) {
+        this.mCurrentActivity = mCurrentActivity;
+    }
+
+    private void clearReferences() {
+        Activity currActivity = getCurrentActivity();
+        if (this.equals(currActivity))
+            setCurrentActivity(null);
+    }
+
+
 }
