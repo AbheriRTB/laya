@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Layam</string>
-    <string name="app_desc"> - Carnatic Metronome</string>
+    <string name="app_title">Layam - Carnatic Metronome</string>
+
 
     <string name="Aditala">AdiTala</string>
     <string name="Rupakatala">RupakaTala</string>

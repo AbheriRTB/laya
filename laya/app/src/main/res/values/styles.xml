@@ -16,4 +16,8 @@
     </style>
 
     <color name="black">#000000</color>
+
+    <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/black</item>
+    </style>
 </resources>
