@@ -12,14 +12,14 @@
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="wrap_content"
-            android:layout_height="325dp"
+            android:layout_height="360dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/mridanga_side"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                android:src="@drawable/mridanga_side" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -33,26 +33,46 @@
                 android:layout_marginTop="?attr/actionBarSize"
                 app:layout_collapseMode="parallax">
 
-                <SeekBar
-                    android:id="@+id/sb_mridanga"
+                <LinearLayout
+                    android:id="@+id/mridanga_set"
                     android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:paddingBottom="0dp"
-                    android:paddingTop="0dp"
-                    android:progress="50"
-                    android:progressDrawable="@drawable/progress_drawable"
-                    android:thumb="@drawable/progress_thumb_drawable" />
+                    android:layout_height="wrap_content"
+                    android:padding="2dp">
+
+                    <Button
+                        android:id="@+id/mute_mridanga"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="5dp"
+                        android:padding="0dp"
+                        android:visibility="visible"
+                        android:background="@drawable/ic_mute" />
+
+                    <SeekBar
+                        android:id="@+id/sb_mridanga"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginBottom="1dp"
+                        android:layout_marginLeft="1dp"
+                        android:layout_marginRight="10dp"
+                        android:paddingBottom="0dp"
+                        android:paddingTop="0dp"
+                        android:progress="50"
+                        android:progressDrawable="@drawable/progress_drawable"
+                        android:thumb="@drawable/progress_thumb_drawable" />
+
+                </LinearLayout>
+
 
                 <TextView
                     android:id="@+id/tv_mridanga_vol"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/sb_mridanga"
-                    android:layout_below="@id/sb_mridanga"
+                    android:layout_alignLeft="@id/mridanga_set"
+                    android:layout_below="@id/mridanga_set"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="10dp"
                     android:text="Mridanga Volume"
@@ -60,27 +80,46 @@
                     android:textSize="@dimen/heading_ts"
                     android:textStyle="italic" />
 
-                <SeekBar
-                    android:id="@+id/sb_tamburi"
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp"
+                <LinearLayout
+                    android:id="@+id/tamburi_set"
                     android:layout_below="@id/tv_mridanga_vol"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:paddingBottom="0dp"
-                    android:paddingTop="0dp"
-                    android:progress="50"
-                    android:progressDrawable="@drawable/progress_drawable"
-                    android:thumb="@drawable/progress_thumb_drawable" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp">
+
+                    <Button
+                        android:id="@+id/mute_tamburi"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="5dp"
+                        android:padding="0dp"
+                        android:visibility="visible"
+                        android:background="@drawable/ic_mute" />
+
+                    <SeekBar
+                        android:id="@+id/sb_tamburi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginBottom="1dp"
+                        android:layout_marginLeft="1dp"
+                        android:layout_marginRight="10dp"
+                        android:paddingBottom="0dp"
+                        android:paddingTop="0dp"
+                        android:progress="50"
+                        android:progressDrawable="@drawable/progress_drawable"
+                        android:thumb="@drawable/progress_thumb_drawable" />
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tv_tamburi_vol"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/sb_tamburi"
-                    android:layout_below="@id/sb_tamburi"
+                    android:layout_alignLeft="@id/tamburi_set"
+                    android:layout_below="@id/tamburi_set"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="20dp"
@@ -115,8 +154,8 @@
                     android:id="@+id/shruti_base"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/shruthi_scroll"
                     android:layout_alignLeft="@id/shruthi_scroll"
+                    android:layout_below="@id/shruthi_scroll"
                     android:orientation="horizontal">
 
                     <RadioButton
@@ -125,8 +164,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:buttonTint="@android:color/holo_orange_dark"
-                        android:text="Sa"
                         android:checked="true"
+                        android:text="Sa"
                         android:textColor="@color/colorAccent" />
 
                     <RadioButton
@@ -137,6 +176,7 @@
                         android:buttonTint="@android:color/holo_orange_dark"
                         android:text="Pa"
                         android:textColor="@color/colorAccent" />
+
                     <RadioButton
                         android:id="@+id/shruti_ma"
                         android:layout_width="wrap_content"
@@ -189,7 +229,6 @@
                     app:switchMinWidth="70dp" />
 
 
-
                 <TextView
                     android:id="@+id/tv_bpm"
                     android:layout_width="wrap_content"
@@ -219,34 +258,43 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin">
 
-                <TextView
+                <!-- <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="10dp"
                     android:text="@string/app_name"
                     android:textColor="@color/transparent_white"
                     android:textSize="21sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold" /> -->
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:weightSum="1">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="1dp"
+                    android:text="@string/app_title"
                     android:textAlignment="gravity"
-                    android:paddingLeft="10dp"
-                    android:text="@string/app_desc"
                     android:textColor="@color/transparent_white"
                     android:textSize="21sp"
+                    android:layout_weight=".7"
                     android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/app_version"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAlignment="gravity"
-                    android:paddingLeft="10dp"
+                    android:paddingLeft="1dp"
                     android:text="v1.0"
+                    android:textAlignment="gravity"
                     android:textColor="@color/transparent_white"
                     android:textSize="10sp"
+                    android:layout_weight=".3"
                     android:textStyle="italic" />
+                </LinearLayout>
 
             </android.support.v7.widget.Toolbar>
 
