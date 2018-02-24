@@ -1,17 +1,18 @@
 package com.abheri.laya.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.abheri.laya.subscriptionUtils.IabException;
 import com.abheri.laya.subscriptionUtils.IabHelper;
 import com.abheri.laya.subscriptionUtils.IabResult;
 import com.abheri.laya.subscriptionUtils.Inventory;
 import com.abheri.laya.subscriptionUtils.Purchase;
 import com.abheri.laya.subscriptionUtils.SkuDetails;
+import com.abheri.laya.util.Util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,17 +30,33 @@ public class BaseActivity extends AppCompatActivity{
 //    private String  = "PixnMSYGLjg7Ah0xDwYILlVZUy0sIiBoMi4jLDcoXTcNLiQjKgtlIC48NiRcHxwKHEcYEyZrPyMWXFRpV10VES9ENzg1Hj06HTV1MCAHJlpgEDcmOxFDEkA8OiQRKjEQDxhRWVVEMBYmNl1AJghcKUAYVT15KSQgBQABMgwqKSlqF1gZBA4fAw5rMyxKIw9LJFc7AhxZGjoPATgRUiUjKSsOWyRKDi4nIA9lKgAGOhMLDF06CwoKGFR6Wj0hGwReS10NXzQTIREhKlkuMz4XDTwUQjRCJUAVjQVPUIoPicOLQJCLxs8RjZnJxY1OQNLKgQCPj83AyBEFSAJEk5UClYjGxVLNBU3FS4DCztENQMuOk5rFVclKz88AAApPgADGFxEEV5eQAF7QBhdQEEBzc5MygCAwlEFzclKRB7FB0uFgwPKgAvLCk2OyFiKxkgIy8BBQYjFy4/E1ktJikrEVlKJVYIHh16NDwtDCU0Vg8JNzoQBwQWOwk1GzZ4FT8fWicwITcRJi8=";
 //    final String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApNjLzyfaWfAJ5H9sFpB0sFUJAVFdDmenjind6OuxZvkdxYWTv8reLu1vvYLjD0SoovJiweGlwmklkJjwT2WCc5SoZ/cXePAhhQshAILw8NUOBy3n2kVaT11FUmYG6yxNXwxjKfCJPFG3AHPpGhlxjhuF7CF7WVnzazfUwJPLDLbsw2P7dj1cunRFLiIVoBC15BD93xPUd9UUIm2oYIzCY9gv7DBppR16bMBUeaWWvnZK774CIkxQNi06AfCubjHoAr7V2O2EEO3MeJHQuHHrA9bVEj5MKkUzHZ4bBHv7YWJrrBpaQYekclYXb8q8L9tByqDDyhOUQ8GdTCTw9jKDgwIDAQAB";
     final String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApNjLzyfaWfAJ5H9sFpB0sFUJAVFdDmenjind6OuxZvkdxYWTv8reLu1vvYLjD0SoovJiweGlwmklkJjwT2WCc5SoZ/cXePAhhQshAILw8NUOBy3n2kVaT11FUmYG6yxNXwxjKfCJPFG3AHPpGhlxjhuF7CF7WVnzazfUwJPLDLbsw2P7dj1cunRFLiIVoBC15BD93xPUd9UUIm2oYIzCY9gv7DBppR16bMBUeaWWvnZK774CIkxQNi06AfCubjHoAr7V2O2EEO3MeJHQuHHrA9bVEj5MKkUzHZ4bBHv7YWJrrBpaQYekclYXb8q8L9tByqDDyhOUQ8GdTCTw9jKDgwIDAQAB";
-    private static final List<String> SKUS = Collections.singletonList("com.abheri.laya.monthlysubscription");
+
+    private static final List<String> SKUS =
+                                    Arrays.asList("com.abheri.laya.monthlysubscription",
+                                                        "monthly_discounted",
+                                                        "com.abheri.laya.yearlysubscription");
 
     private IabHelper iabHelper;
     private String subscriptionType = "monthly_discounted";
+    private SkuDetails skuList[] = new SkuDetails[SKUS.size()];
     private String payload = "";
     public boolean mIsSubscriptionPending = true;
+    Context self;
+    int prodIndex = 0;
+    boolean doProductSelection=false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         iabHelper = new IabHelper(this, base64EncodedPublicKey);
+        self = this;
+
+        if(getIntent().getExtras() != null) {
+            prodIndex = (int) getIntent().getExtras().get("SELECTED_SKU");
+            doProductSelection = (boolean) getIntent().getExtras().get("DO_PROD_SELECTION");
+        }
+
         iabHelper.enableDebugLogging(true, "IAB_HELPER_DEMO_TAG");
         iabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
             @Override
@@ -50,15 +67,26 @@ public class BaseActivity extends AppCompatActivity{
                 }
 
                 try {
-
                     iabHelper.queryInventoryAsync(true,
                             null,
                             SKUS,
                             new IabHelper.QueryInventoryFinishedListener() {
+                                Purchase purchase;
+                                SkuDetails sku;
                                 @Override
                                 public void onQueryInventoryFinished(IabResult result, Inventory inv) {
-                                    SkuDetails sku = inv.getSkuDetails(subscriptionType);
-                                    Purchase purchase = inv.getPurchase(subscriptionType);
+                                    for(int i=0; i< SKUS.size(); ++i){
+                                        skuList[i] = inv.getSkuDetails(SKUS.get(i));
+                                        purchase = inv.getPurchase(SKUS.get(i));
+                                        sku = skuList[i];
+                                        if(prodIndex == i)
+                                            subscriptionType = sku.getSku();
+                                        if(purchase != null){
+                                            break;
+                                        }
+                                    }
+                                     //sku = inv.getSkuDetails(subscriptionType);
+                                     //purchase = inv.getPurchase(subscriptionType);
                                     if(sku!=null){
                                         Log.d("BaseActivitySubs","Sku::"+sku.getSku());
                                         Log.d("BaseActivitySubs","SkuDesc::"+sku.getDescription());
@@ -73,6 +101,11 @@ public class BaseActivity extends AppCompatActivity{
                                             mIsSubscriptionPending = false;
                                         }
                                     }
+
+                                    if(mIsSubscriptionPending && doProductSelection){
+                                        launchSubscription();
+                                }
+
                                 }
                             });
 
@@ -83,6 +116,17 @@ public class BaseActivity extends AppCompatActivity{
             }
         });
 
+
+
+    }
+
+    public void launchProductOptions(){
+        if(mIsSubscriptionPending){
+            //Invoke product selection activity
+            Intent psActivity = new Intent(self, ProductSelectionActivity.class);
+            psActivity.putExtra("SKULIST", skuList);
+            startActivity(psActivity);
+        }
     }
 
     public void launchSubscription() {

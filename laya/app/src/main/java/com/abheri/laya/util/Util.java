@@ -8,8 +8,11 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 import android.content.Context;
@@ -42,6 +45,11 @@ public class Util {
 
     public static final long AUTO_REFRESH_INTERVAL = 1 * 24 * 60 * 60 * 1000;//7*24*60*60*1000;
 
+
+    /*
+    public static ArrayList<String> productSubscriptions = new ArrayList<String>(
+            Arrays.asList("com.abheri.laya.monthlysubscription",
+                    "monthly_discounted", "com.abheri.laya.yearlysubscription")); */
 
     //-----------------
 

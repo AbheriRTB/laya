@@ -18,10 +18,12 @@ package com.abheri.laya.subscriptionUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 /**
  * Represents an in-app product's listing details.
  */
-public class SkuDetails {
+public class  SkuDetails implements Serializable {
     private final String mItemType;
     private final String mSku;
     private final String mType;
