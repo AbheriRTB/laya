@@ -611,7 +611,7 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
 
         TextView[] arr = getBpmTextViews();
 
-        //TODO: Remove this for production app
+        /*//TODO: Remove this for production app
         if (v.getId() != R.id.bpm_80 && v.getId() != R.id.bpm_120) {
             Toast.makeText(self, "Coming Soon...", Toast.LENGTH_SHORT).show();
             //return;
@@ -619,28 +619,44 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
             Intent myIntent = new Intent(self, MainActivity.class);
             //myIntent.putExtra("key", value); //Optional parameters
             self.startActivity(myIntent);
-        }
+        }*/
         switch (v.getId()) {
             case R.id.bpm_70:
             default:
-                mSelectedBpm = this.getResources().getString(R.string.bpm_70);
-                setTextColor(bpm70, arr);
+                if(!mIsSubscriptionPending) {
+                    mSelectedBpm = this.getResources().getString(R.string.bpm_70);
+                    setTextColor(bpm70, arr);
+                }else {
+                    launchSubscription();
+                }
                 break;
             case R.id.bpm_80:
                 mSelectedBpm = this.getResources().getString(R.string.bpm_80);
                 setTextColor(bpm80, arr);
                 break;
             case R.id.bpm_90:
-                mSelectedBpm = this.getResources().getString(R.string.bpm_90);
-                setTextColor(bpm90, arr);
+                if(!mIsSubscriptionPending) {
+                    mSelectedBpm = this.getResources().getString(R.string.bpm_90);
+                    setTextColor(bpm90, arr);
+                }else {
+                    launchSubscription();
+                }
                 break;
             case R.id.bpm_100:
-                mSelectedBpm = this.getResources().getString(R.string.bpm_100);
-                setTextColor(bpm100, arr);
+                if(!mIsSubscriptionPending) {
+                    mSelectedBpm = this.getResources().getString(R.string.bpm_100);
+                    setTextColor(bpm100, arr);
+                }else{
+                    launchSubscription();
+                }
                 break;
             case R.id.bpm_110:
-                mSelectedBpm = this.getResources().getString(R.string.bpm_110);
-                setTextColor(bpm110, arr);
+                if(!mIsSubscriptionPending) {
+                    mSelectedBpm = this.getResources().getString(R.string.bpm_110);
+                    setTextColor(bpm110, arr);
+                }else {
+                    launchSubscription();
+                }
                 break;
             case R.id.bpm_120:
                 mSelectedBpm = this.getResources().getString(R.string.bpm_120);
