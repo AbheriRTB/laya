@@ -668,14 +668,13 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         for (TextView unselectedTv : unselectedTvArr) {
             unselectedTv.setTextColor(ContextCompat.getColor(this, R.color.grayedOut));
 
-            //TODO: Remove this for Production app
-            //If 80 or 120 BPM, render in white color
+            //If 80 or 120 BPM, render in white color as they are the only free BPMs available
+            //Other BPMs are released after subscribing
             if (unselectedTv.getText().equals("80") || unselectedTv.getText().equals("120")) {
                 unselectedTv.setTextColor(ContextCompat.getColor(this, R.color.white));
-            } //TODO: Remove this for Production app
-            //TODO: Remove this for Production app
-            //If it is not BPM, render in white color
-            if (!unselectedTv.getText().toString().endsWith("0")) {
+            }
+            //If user has subscribed to a plan, release other BPMs too. Visually make them white
+            if(!mIsSubscriptionPending){
                 unselectedTv.setTextColor(ContextCompat.getColor(this, R.color.white));
             }
         }

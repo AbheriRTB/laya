@@ -26,14 +26,11 @@ public class BaseActivity extends AppCompatActivity{
 
 
     private static final int REQUEST_CODE = 1001;
-    //    private String base64EncodedPublicKey = "PixnMSYGLjg7Ah0xDwYILlVZUy0sIiBoMi4jLDcoXTcNLiQjKgtlIC48NiRcHxwKHEcYEyZrPyMWXFRpV10VES9ENzg1Hj06HTV1MCAHJlpgEDcmOxFDEkA8OiQRKjEQDxhRWVVEMBYmNl1AJghcKUAYVT15KSQgBQABMgwqKSlqF1gZBA4fAw5rMyxKIw9LJFc7AhxZGjoPATgRUiUjKSsOWyRKDi4nIA9lKgAGOhMLDF06CwoKGFR6Wj0hGwReS10NXzQTIREhKlkuMz4XDTwUQjRCJUAVjQVPUIoPicOLQJCLxs8RjZnJxY1OQNLKgQCPj83AyBEFSAJEk5UClYjGxVLNBU3FS4DCztENQMuOk5rFVclKz88AAApPgADGFxEEV5eQAF7QBhdQEEBzc5MygCAwlEFzclKRB7FB0uFgwPKgAvLCk2OyFiKxkgIy8BBQYjFy4/E1ktJikrEVlKJVYIHh16NDwtDCU0Vg8JNzoQBwQWOwk1GzZ4FT8fWicwITcRJi8=";
-//    private String  = "PixnMSYGLjg7Ah0xDwYILlVZUy0sIiBoMi4jLDcoXTcNLiQjKgtlIC48NiRcHxwKHEcYEyZrPyMWXFRpV10VES9ENzg1Hj06HTV1MCAHJlpgEDcmOxFDEkA8OiQRKjEQDxhRWVVEMBYmNl1AJghcKUAYVT15KSQgBQABMgwqKSlqF1gZBA4fAw5rMyxKIw9LJFc7AhxZGjoPATgRUiUjKSsOWyRKDi4nIA9lKgAGOhMLDF06CwoKGFR6Wj0hGwReS10NXzQTIREhKlkuMz4XDTwUQjRCJUAVjQVPUIoPicOLQJCLxs8RjZnJxY1OQNLKgQCPj83AyBEFSAJEk5UClYjGxVLNBU3FS4DCztENQMuOk5rFVclKz88AAApPgADGFxEEV5eQAF7QBhdQEEBzc5MygCAwlEFzclKRB7FB0uFgwPKgAvLCk2OyFiKxkgIy8BBQYjFy4/E1ktJikrEVlKJVYIHh16NDwtDCU0Vg8JNzoQBwQWOwk1GzZ4FT8fWicwITcRJi8=";
-//    final String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApNjLzyfaWfAJ5H9sFpB0sFUJAVFdDmenjind6OuxZvkdxYWTv8reLu1vvYLjD0SoovJiweGlwmklkJjwT2WCc5SoZ/cXePAhhQshAILw8NUOBy3n2kVaT11FUmYG6yxNXwxjKfCJPFG3AHPpGhlxjhuF7CF7WVnzazfUwJPLDLbsw2P7dj1cunRFLiIVoBC15BD93xPUd9UUIm2oYIzCY9gv7DBppR16bMBUeaWWvnZK774CIkxQNi06AfCubjHoAr7V2O2EEO3MeJHQuHHrA9bVEj5MKkUzHZ4bBHv7YWJrrBpaQYekclYXb8q8L9tByqDDyhOUQ8GdTCTw9jKDgwIDAQAB";
     final String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApNjLzyfaWfAJ5H9sFpB0sFUJAVFdDmenjind6OuxZvkdxYWTv8reLu1vvYLjD0SoovJiweGlwmklkJjwT2WCc5SoZ/cXePAhhQshAILw8NUOBy3n2kVaT11FUmYG6yxNXwxjKfCJPFG3AHPpGhlxjhuF7CF7WVnzazfUwJPLDLbsw2P7dj1cunRFLiIVoBC15BD93xPUd9UUIm2oYIzCY9gv7DBppR16bMBUeaWWvnZK774CIkxQNi06AfCubjHoAr7V2O2EEO3MeJHQuHHrA9bVEj5MKkUzHZ4bBHv7YWJrrBpaQYekclYXb8q8L9tByqDDyhOUQ8GdTCTw9jKDgwIDAQAB";
 
     private static final List<String> SKUS =
-                                    Arrays.asList("com.abheri.laya.monthlysubscription",
-                                                        "monthly_discounted",
+                                    Arrays.asList(  "com.abheri.laya.weeklysubscription",
+                                                        "com.abheri.laya.monthlysubscription",
                                                         "com.abheri.laya.yearlysubscription");
 
     private IabHelper iabHelper;
@@ -52,9 +49,13 @@ public class BaseActivity extends AppCompatActivity{
         iabHelper = new IabHelper(this, base64EncodedPublicKey);
         self = this;
 
-        if(getIntent().getExtras() != null) {
+        if(getIntent().getExtras() != null &&
+                getIntent().getExtras().get("SELECTED_SKU") != null &&
+                getIntent().getExtras().get("DO_PROD_SELECTION") != null) {
             prodIndex = (int) getIntent().getExtras().get("SELECTED_SKU");
             doProductSelection = (boolean) getIntent().getExtras().get("DO_PROD_SELECTION");
+            getIntent().removeExtra("SELECTED_SKU");
+            getIntent().removeExtra("DO_PROD_SELECTION");
         }
 
         iabHelper.enableDebugLogging(true, "IAB_HELPER_DEMO_TAG");

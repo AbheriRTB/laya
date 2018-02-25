@@ -38,7 +38,10 @@ public class ProductSelectionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product_selection);
         ButterKnife.bind(this);
 
-        skuList = (SkuDetails[]) getIntent().getExtras().get("SKULIST");
+        if(getIntent().getExtras() != null) {
+            skuList = (SkuDetails[]) getIntent().getExtras().get("SKULIST");
+            getIntent().removeExtra("SKULIST");
+        }
         createRadioButtons(skuList);
 
     }
