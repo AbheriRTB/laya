@@ -11,5 +11,15 @@
     <color name="white">#ffffff</color>
     <color name="transparent">#ffffff</color>
     <color name="progress_color">#FFFF4400</color>
+    <color name="progress_color_light">#FFFF6699</color>
     <color name="grayedOut">#ffaaaaaa</color>
+
+
+    <color name="colorPrimaryLight">#80cbc4</color>
+    <color name="colorPrimaryLight2">#E0F2F1</color>
+    <color name="textTitle">#333333</color>
+    <color name="textSubTitle">#444444</color>
+    <color name="textBody">#555555</color>
+    <color name="textDate">#777777</color>
+    <color name="separator">#E0F2F1</color>
 </resources>

@@ -3,6 +3,7 @@ package com.abheri.laya.activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -45,7 +46,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTouch;
 
@@ -56,75 +57,75 @@ import butterknife.OnTouch;
 public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetChangedListener,
         AdapterView.OnItemClickListener, CompoundButton.OnCheckedChangeListener {
 
-    @InjectView(R.id.appbar)
+    @BindView(R.id.appbar)
     AppBarLayout appBarLayout;
-    @InjectView(R.id.header_layout)
+    @BindView(R.id.header_layout)
     RelativeLayout headerLayout;
-    @InjectView(R.id.list_view)
+    @BindView(R.id.list_view)
     ListView listView;
-    @InjectView(R.id.btn_play)
+    @BindView(R.id.btn_play)
     FloatingActionButton btnPlay;
-    @InjectView(R.id.btn_pause)
+    @BindView(R.id.btn_pause)
     FloatingActionButton btnPause;
-    @InjectView(R.id.switch_kaala)
+    @BindView(R.id.switch_kaala)
     SwitchCompat kaalaSwitch;
-    @InjectView(R.id.sb_mridanga)
+    @BindView(R.id.sb_mridanga)
     SeekBar sbMridanga;
-    @InjectView(R.id.sb_tamburi)
+    @BindView(R.id.sb_tamburi)
     SeekBar sbTamburi;
-    @InjectView(R.id.shruthi_scroll)
+    @BindView(R.id.shruthi_scroll)
     View shruthiScroll;
-    @InjectView(R.id.bpm_70)
+    @BindView(R.id.bpm_70)
     TextView bpm70;
-    @InjectView(R.id.bpm_80)
+    @BindView(R.id.bpm_80)
     TextView bpm80;
-    @InjectView(R.id.bpm_90)
+    @BindView(R.id.bpm_90)
     TextView bpm90;
-    @InjectView(R.id.bpm_100)
+    @BindView(R.id.bpm_100)
     TextView bpm100;
-    @InjectView(R.id.bpm_110)
+    @BindView(R.id.bpm_110)
     TextView bpm110;
-    @InjectView(R.id.bpm_120)
+    @BindView(R.id.bpm_120)
     TextView bpm120;
-    @InjectView(R.id.shruthi_a)
+    @BindView(R.id.shruthi_a)
     TextView shruthiA;
-    @InjectView(R.id.shruthi_as)
+    @BindView(R.id.shruthi_as)
     TextView shruthiAs;
-    @InjectView(R.id.shruthi_b)
+    @BindView(R.id.shruthi_b)
     TextView shruthiB;
-    @InjectView(R.id.shruthi_c)
+    @BindView(R.id.shruthi_c)
     TextView shruthiC;
-    @InjectView(R.id.shruthi_cs)
+    @BindView(R.id.shruthi_cs)
     TextView shruthiCs;
-    @InjectView(R.id.shruthi_d)
+    @BindView(R.id.shruthi_d)
     TextView shruthiD;
-    @InjectView(R.id.shruthi_ds)
+    @BindView(R.id.shruthi_ds)
     TextView shruthiDs;
-    @InjectView(R.id.shruthi_e)
+    @BindView(R.id.shruthi_e)
     TextView shruthiE;
-    @InjectView(R.id.shruthi_f)
+    @BindView(R.id.shruthi_f)
     TextView shruthiF;
-    @InjectView(R.id.shruthi_fs)
+    @BindView(R.id.shruthi_fs)
     TextView shruthiFs;
-    @InjectView(R.id.shruthi_g)
+    @BindView(R.id.shruthi_g)
     TextView shruthiG;
-    @InjectView(R.id.shruthi_gs)
+    @BindView(R.id.shruthi_gs)
     TextView shruthiGs;
-    @InjectView(R.id.shruti_base)
+    @BindView(R.id.shruti_base)
     RadioGroup shrutiBase;
-    @InjectView(R.id.shruti_sa)
+    @BindView(R.id.shruti_sa)
     RadioButton shrutiSa;
-    @InjectView(R.id.shruti_pa)
+    @BindView(R.id.shruti_pa)
     RadioButton shrutiPa;
-    @InjectView(R.id.shruti_ma)
+    @BindView(R.id.shruti_ma)
     RadioButton shrutiMa;
-    @InjectView(R.id.shruti_ni)
+    @BindView(R.id.shruti_ni)
     RadioButton shrutiNi;
-    @InjectView(R.id.app_version)
+    @BindView(R.id.app_version)
     TextView appVersion;
-    @InjectView(R.id.mute_mridanga)
+    @BindView(R.id.mute_mridanga)
     Button muteMridanga;
-    @InjectView(R.id.mute_tamburi)
+    @BindView(R.id.mute_tamburi)
     Button muteTamburi;
 
 
@@ -158,7 +159,7 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         self = this;
 
         loadPreferences();
@@ -610,32 +611,43 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
 
         TextView[] arr = getBpmTextViews();
 
-        //TODO: Remove this for production app
-        if (v.getId() != R.id.bpm_80 && v.getId() != R.id.bpm_120) {
-            Toast.makeText(self, "Coming Soon...", Toast.LENGTH_SHORT).show();
-            return;
-        }
         switch (v.getId()) {
             case R.id.bpm_70:
             default:
-                mSelectedBpm = this.getResources().getString(R.string.bpm_70);
-                setTextColor(bpm70, arr);
+                if(!mIsSubscriptionPending) {
+                    mSelectedBpm = this.getResources().getString(R.string.bpm_70);
+                    setTextColor(bpm70, arr);
+                }else {
+                    launchProductOptions();
+                }
                 break;
             case R.id.bpm_80:
                 mSelectedBpm = this.getResources().getString(R.string.bpm_80);
                 setTextColor(bpm80, arr);
                 break;
             case R.id.bpm_90:
-                mSelectedBpm = this.getResources().getString(R.string.bpm_90);
-                setTextColor(bpm90, arr);
+                if(!mIsSubscriptionPending) {
+                    mSelectedBpm = this.getResources().getString(R.string.bpm_90);
+                    setTextColor(bpm90, arr);
+                }else {
+                    launchProductOptions();
+                }
                 break;
             case R.id.bpm_100:
-                mSelectedBpm = this.getResources().getString(R.string.bpm_100);
-                setTextColor(bpm100, arr);
+                if(!mIsSubscriptionPending) {
+                    mSelectedBpm = this.getResources().getString(R.string.bpm_100);
+                    setTextColor(bpm100, arr);
+                }else{
+                    launchProductOptions();
+                }
                 break;
             case R.id.bpm_110:
-                mSelectedBpm = this.getResources().getString(R.string.bpm_110);
-                setTextColor(bpm110, arr);
+                if(!mIsSubscriptionPending) {
+                    mSelectedBpm = this.getResources().getString(R.string.bpm_110);
+                    setTextColor(bpm110, arr);
+                }else {
+                    launchProductOptions();
+                }
                 break;
             case R.id.bpm_120:
                 mSelectedBpm = this.getResources().getString(R.string.bpm_120);
@@ -656,14 +668,13 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         for (TextView unselectedTv : unselectedTvArr) {
             unselectedTv.setTextColor(ContextCompat.getColor(this, R.color.grayedOut));
 
-            //TODO: Remove this for Production app
-            //If 80 or 120 BPM, render in white color
+            //If 80 or 120 BPM, render in white color as they are the only free BPMs available
+            //Other BPMs are released after subscribing
             if (unselectedTv.getText().equals("80") || unselectedTv.getText().equals("120")) {
                 unselectedTv.setTextColor(ContextCompat.getColor(this, R.color.white));
-            } //TODO: Remove this for Production app
-            //TODO: Remove this for Production app
-            //If it is not BPM, render in white color
-            if (!unselectedTv.getText().toString().endsWith("0")) {
+            }
+            //If user has subscribed to a plan, release other BPMs too. Visually make them white
+            if(!mIsSubscriptionPending){
                 unselectedTv.setTextColor(ContextCompat.getColor(this, R.color.white));
             }
         }
