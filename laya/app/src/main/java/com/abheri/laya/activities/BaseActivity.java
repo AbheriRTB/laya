@@ -12,11 +12,8 @@ import com.abheri.laya.subscriptionUtils.IabResult;
 import com.abheri.laya.subscriptionUtils.Inventory;
 import com.abheri.laya.subscriptionUtils.Purchase;
 import com.abheri.laya.subscriptionUtils.SkuDetails;
-import com.abheri.laya.util.Util;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -29,9 +26,10 @@ public class BaseActivity extends AppCompatActivity{
     final String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApNjLzyfaWfAJ5H9sFpB0sFUJAVFdDmenjind6OuxZvkdxYWTv8reLu1vvYLjD0SoovJiweGlwmklkJjwT2WCc5SoZ/cXePAhhQshAILw8NUOBy3n2kVaT11FUmYG6yxNXwxjKfCJPFG3AHPpGhlxjhuF7CF7WVnzazfUwJPLDLbsw2P7dj1cunRFLiIVoBC15BD93xPUd9UUIm2oYIzCY9gv7DBppR16bMBUeaWWvnZK774CIkxQNi06AfCubjHoAr7V2O2EEO3MeJHQuHHrA9bVEj5MKkUzHZ4bBHv7YWJrrBpaQYekclYXb8q8L9tByqDDyhOUQ8GdTCTw9jKDgwIDAQAB";
 
     private static final List<String> SKUS =
-                                    Arrays.asList(  "com.abheri.laya.weeklysubscription",
-                                                        "com.abheri.laya.monthlysubscription",
-                                                        "com.abheri.laya.yearlysubscription");
+                                    Arrays.asList(  "com.abheri.laya.weekly_75rs_25mar18",
+                                                        "com.abheri.laya.monthly_150rs_25mar18",
+                                                        "com.abheri.laya.halfyearly_499rs_25mar18",
+                                                        "com.abheri.laya.yearly_799rs_25mar18");
 
     private IabHelper iabHelper;
     private String subscriptionType = "monthly_discounted";
@@ -50,8 +48,8 @@ public class BaseActivity extends AppCompatActivity{
         self = this;
 
         if(getIntent().getExtras() != null &&
-                getIntent().getExtras().get("SELECTED_SKU") != null &&
-                getIntent().getExtras().get("DO_PROD_SELECTION") != null) {
+                getIntent().hasExtra("SELECTED_SKU") &&
+                getIntent().hasExtra("DO_PROD_SELECTION")) {
             prodIndex = (int) getIntent().getExtras().get("SELECTED_SKU");
             doProductSelection = (boolean) getIntent().getExtras().get("DO_PROD_SELECTION");
             getIntent().removeExtra("SELECTED_SKU");

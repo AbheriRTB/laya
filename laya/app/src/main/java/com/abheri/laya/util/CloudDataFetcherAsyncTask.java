@@ -3,7 +3,10 @@ package com.abheri.laya.util;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
 
+import com.abheri.laya.activities.BaseActivity;
+import com.abheri.laya.models.SubscriptionDataHelper;
 import com.abheri.laya.views.HandleServiceResponse;
 
 import java.io.BufferedInputStream;
@@ -25,12 +28,12 @@ import java.util.HashMap;
 public class CloudDataFetcherAsyncTask extends AsyncTask<String, String, Object> {
 
     ProgressDialog progressDialog;
-    HandleServiceResponse serviceResponseInterface;
+    com.abheri.laya.util.HandleServiceResponse serviceResponseInterface;
     LayamOperations currentOper;
     Context context;
     HashMap postDataParams;
 
-    public CloudDataFetcherAsyncTask(HandleServiceResponse handleServiceResponse,
+    public CloudDataFetcherAsyncTask( com.abheri.laya.util.HandleServiceResponse handleServiceResponse,
                                      LayamOperations curoper, Context ctx)
     {
         serviceResponseInterface = handleServiceResponse;
@@ -38,7 +41,7 @@ public class CloudDataFetcherAsyncTask extends AsyncTask<String, String, Object>
         context = ctx;
     }
 
-    public CloudDataFetcherAsyncTask(HandleServiceResponse handleServiceResponse,
+    public CloudDataFetcherAsyncTask(com.abheri.laya.util.HandleServiceResponse handleServiceResponse,
                                      LayamOperations curoper, Context ctx, HashMap pDataParam)
     {
         serviceResponseInterface = handleServiceResponse;
@@ -99,7 +102,8 @@ public class CloudDataFetcherAsyncTask extends AsyncTask<String, String, Object>
                         returnObj = responseString;
                         break;
                     case GETSUBSCRIPTIONS:
-                        returnObj = responseString;
+                        SubscriptionDataHelper sdh = new SubscriptionDataHelper();
+                        returnObj = sdh.parseVenueListFromJsonResponse((String)returnObj);
                         break;
 
                     default:
