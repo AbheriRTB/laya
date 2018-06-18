@@ -2,6 +2,7 @@ package com.abheri.laya.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -44,6 +45,16 @@ public class BaseActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        Log.d("DEVICE", Build.DEVICE );
+        Log.d("PRODUCT", Build.PRODUCT);
+
+
+        //If running on an emulator, don't attempt to start InAppBilling services
+        // as they can't run on an emulator
+        if(Build.DEVICE.toLowerCase().contains("generic") || Build.PRODUCT.toLowerCase().contains("sdk")){
+            return;
+        }
+
         iabHelper = new IabHelper(this, base64EncodedPublicKey);
         self = this;
 

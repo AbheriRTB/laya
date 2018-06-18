@@ -33,7 +33,16 @@
             </intent-filter>
         </receiver>
         -->
+
+        <activity
+            android:name=".activities.MyReactActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+
         <activity android:name=".activities.ProductSelectionActivity"></activity>
+
+        <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
     </application>
 
 </manifest>

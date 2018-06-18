@@ -40,4 +40,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     // Robolectric
     testCompile "org.robolectric:robolectric:3.3.2"
+
+    compile "com.facebook.react:react-native:+" // From node_modules
 }

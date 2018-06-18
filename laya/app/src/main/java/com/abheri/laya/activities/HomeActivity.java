@@ -12,9 +12,11 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -152,6 +154,8 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
     private boolean isPlaying = false;
     private int loadingDelay = 1000;
 
+    private final int OVERLAY_PERMISSION_REQ_CODE = 1;  // Choose any value
+
     Context self;
 
 
@@ -161,6 +165,14 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         self = this;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(this)) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:" + getPackageName()));
+                startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
+            }
+        }
 
         loadPreferences();
 
@@ -178,6 +190,17 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
 
         //IntentFilter phoneStateFilter = new IntentFilter(Intent.ACTION_CALL);
         //registerReceiver(new EventBroadcastReceiver(), phoneStateFilter);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (!Settings.canDrawOverlays(this)) {
+                    // SYSTEM_ALERT_WINDOW permission not granted
+                }
+            }
+        }
     }
 
     @Override
@@ -337,6 +360,11 @@ public class HomeActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         }
     }
 
+    @OnClick(R.id.tv_mridanga_vol)
+    public void launchReact(){
+        Intent i = new Intent(getBaseContext(), MyReactActivity.class);
+        startActivity(i);
+    }
     @OnClick(R.id.btn_play)
     public void playClicked() {
         showPause();
