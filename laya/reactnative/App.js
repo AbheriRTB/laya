@@ -1,25 +1,41 @@
 import React from 'react';
-import {AppRegistry, StyleSheet, Text, View} from 'react-native';
+import {AppRegistry, StyleSheet, Text, View, ScrollView } from 'react-native';
+import Apptitle from './src/components/apptitle';
+import Volumecontroller from './src/components/volumecontroller';
+import Label from './src/components/label';
 
-class HelloWorld extends React.Component {
+class LayamApp extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.hello}>Hello, World</Text>
-      </View>
+      <ScrollView style={{ paddingTop: 25 }}>
+        <View style={{ 
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row'
+        }}>
+          <Apptitle />
+        </View>
+
+        <View style={styles.container}>
+          <Volumecontroller />
+          <Label displayText='Mridanga Volume' />
+        </View>
+        
+      </ScrollView>
     );
   }
 }
-var styles = StyleSheet.create({
+
+const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-  },
-  hello: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+    backgroundColor: '#fff',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    flexDirection: 'column',
+    margin: 10
   },
 });
 
-AppRegistry.registerComponent('MyReactNativeApp', () => HelloWorld);
+AppRegistry.registerComponent('MyReactNativeApp', () => LayamApp);
